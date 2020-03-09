@@ -10,7 +10,7 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/kem \
 
-SOURCES = pack_unpack.c poly.c rng.o fips202.o verify.c cbd.c SABER_indcpa.c kem.c
+SOURCES = pack_unpack.c poly.c rng.c fips202.c verify.c cbd.c SABER_indcpa.c kem.c
 HEADERS = SABER_params.h pack_unpack.h poly.h rng.h fips202.h verify.h cbd.h SABER_indcpa.h kem.h 
 
 
