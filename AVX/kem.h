@@ -1,5 +1,6 @@
 #ifndef INDCPA_H
 #define INDCPA_H
+#include<stdint.h>
 
 void indcpa_keypair(uint8_t *pk, uint8_t *sk);
 
@@ -16,8 +17,9 @@ int crypto_kem_enc(unsigned char *c, unsigned char *k, const unsigned char *pk);
 int crypto_kem_dec(unsigned char *k, const unsigned char *c, const unsigned char *sk);
 
 
-uint64_t clock1,clock2;
-uint64_t clock_kp_mv,clock_cl_mv, clock_kp_sm, clock_cl_sm;
+//uint64_t clock1,clock2;
+
+//uint64_t clock_kp_kex, clock_enc_kex, clock_dec_kex;
 
 
 #endif

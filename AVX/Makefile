@@ -10,15 +10,15 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/test_sample_matrix
 
-SOURCES = pack_unpack.c poly.c verify.c fips202.c fips202x4.c SABER_indcpa.c kem.c \
+SOURCES = pack_unpack.c poly.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
 					cbd.c crypto_stream_aes256ctr.c \
-					keccak4x/KeccakP-1600-times4-SIMD256.c rng.c
+					keccak4x/KeccakP-1600-times4-SIMD256.o rng.o
 #rng.o
 #randombytes.c
 
-SOURCES2 = pack_unpack.c rng.c poly.c verify.c fips202.c fips202x4.c SABER_indcpa.c kem.c \
+SOURCES2 = pack_unpack.c rng.o poly.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
 					cbd.c crypto_stream_aes256ctr.c \
-					keccak4x/KeccakP-1600-times4-SIMD256.c
+					keccak4x/KeccakP-1600-times4-SIMD256.o
 
 HEADERS = SABER_params.h pack_unpack.h poly.h verify.h cbd.h SABER_indcpa.h kem.h rng.h fips202.h fips202x4.h api.h randombytes.h
 

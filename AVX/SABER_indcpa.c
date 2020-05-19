@@ -8,7 +8,8 @@
 #include "rng.h"
 #include "cbd.h"
 #include "SABER_params.h"
-#include "./polymul/toom_cook_4/toom-cook_4way.c"
+//#include "./polymul/toom_cook_4/toom-cook_4way.c"
+#include "./polymul/toom-cook_4way.c"
 #include "fips202.h"
 #include "fips202x4.h"
 
@@ -136,6 +137,12 @@ void GenSecret(uint16_t r[SABER_K][SABER_N],const unsigned char *seed){
 		}
 }
 
+//********************************matrix-vector mul routines*****************************************************
+void matrix_vector_mul(__m256i a1_avx_combined[NUM_POLY][NUM_POLY][AVX_N1], __m256i b_bucket[NUM_POLY][SCHB_N*4], __m256i res_avx[NUM_POLY][AVX_N1], int isTranspose);
+void vector_vector_mul(__m256i a_avx[NUM_POLY][AVX_N1], __m256i b_bucket[NUM_POLY][SCHB_N*4], __m256i res_avx[AVX_N1]);
+
+//********************************matrix-vector mul routines*****************************************************
+
 void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 {
  
@@ -156,7 +163,8 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
   __m256i mod;
   __m256i res_avx[SABER_K][SABER_N/16];
   __m256i a_avx[SABER_K][SABER_K][SABER_N/16];
-  __m256i acc[2*SABER_N/16];
+  //__m256i acc[2*SABER_N/16];
+
 
   mask_ar[0]=~(0UL);mask_ar[1]=~(0UL);mask_ar[2]=~(0UL);mask_ar[3]=~(0UL);
   mask_load = _mm256_loadu_si256 ((__m256i const *)mask_ar);
@@ -166,6 +174,7 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 
   H1_avx=_mm256_set1_epi16(h1);
 
+  __m256i b_bucket[NUM_POLY][SCHB_N*4];
 
 //--------------AVX declaration ends------------------
 
@@ -174,20 +183,13 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 
   randombytes(seed, SABER_SEEDBYTES);
  
-
-
   shake128(seed, SABER_SEEDBYTES, seed, SABER_SEEDBYTES); // for not revealing system RNG state
   randombytes(noiseseed, SABER_COINBYTES);
 
-  clock1=cpucycles();
-  GenMatrix(a, seed); //sample matrix A
-  clock2=cpucycles();
-  clock_matrix=clock_matrix+(clock2-clock1);
 
- clock1=cpucycles();
- GenSecret(skpv1,noiseseed);
- clock2=cpucycles();
- clock_secret=clock_secret+(clock2-clock1);
+  GenMatrix(a, seed); //sample matrix A
+
+  GenSecret(skpv1,noiseseed);
 
 
  // Load sk into avx vectors		
@@ -212,28 +214,14 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 
   //------------------------do the matrix vector multiplication and rounding------------
 
-
-	for(i=0;i<SABER_K;i++){
-		for(j=0;j<SABER_N/16;j++){
-			res_avx[i][j]=_mm256_xor_si256(res_avx[i][j],res_avx[i][j]);
-		}
+	for(j=0;j<NUM_POLY;j++){
+		TC_eval(sk_avx[j], b_bucket[j]);
 	}
-
-	// Matrix-vector multiplication; Matrix in transposed order
-	for(i=0;i<SABER_K;i++){
-		for(j=0;j<SABER_K;j++){
-			toom_cook_4way_avx(a_avx[j][i], sk_avx[j], SABER_Q, acc);
-
-			for(k=0;k<SABER_N/16;k++){
-				res_avx[i][k]=_mm256_add_epi16(res_avx[i][k],acc[k]);
-				res_avx[i][k]=_mm256_and_si256(res_avx[i][k],mod); //reduction mod p
-				acc[k]=_mm256_xor_si256(acc[k],acc[k]); //clear the accumulator
-			}
-		}
-	}
-
+	matrix_vector_mul(a_avx, b_bucket, res_avx, 1);// Matrix-vector multiplication; Matrix in transposed order
 	
 	// Now truncation
+
+		
 	for(i=0;i<SABER_K;i++){ //shift right EQ-EP bits
 		for(j=0;j<SABER_N/16;j++){
 			res_avx[i][j]=_mm256_add_epi16 (res_avx[i][j], H1_avx);
@@ -278,6 +266,8 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 	uint16_t message[SABER_KEYBYTES*8];
 
 	unsigned char msk_c[SABER_SCALEBYTES_KEM];
+
+	uint64_t CLOCK1, CLOCK2;
 	//--------------AVX declaration------------------
 	
 	  __m256i sk_avx[SABER_K][SABER_N/16];
@@ -285,11 +275,11 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 	  __m256i res_avx[SABER_K][SABER_N/16];
 	  __m256i vprime_avx[SABER_N/16];
 	  __m256i a_avx[SABER_K][SABER_K][SABER_N/16];
-	  __m256i acc[2*SABER_N/16];
+	  //__m256i acc[2*SABER_N/16];
 
 	  __m256i pkcl_avx[SABER_K][SABER_N/16];
 
-      __m256i message_avx[SABER_N/16];
+          __m256i message_avx[SABER_N/16];
 		
 	  mask_ar[0]=~(0UL);mask_ar[1]=~(0UL);mask_ar[2]=~(0UL);mask_ar[3]=~(0UL);
 	  mask_load = _mm256_loadu_si256 ((__m256i const *)mask_ar);
@@ -303,6 +293,8 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 
 	H1_avx=_mm256_set1_epi16(h1);
  
+	__m256i b_bucket[NUM_POLY][SCHB_N*4];
+
 	//--------------AVX declaration ends------------------
 	load_values();
       
@@ -310,10 +302,17 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 		seed[i]=pk[ SABER_POLYVECCOMPRESSEDBYTES + i]; 
 	}
 
-
-	GenMatrix(a, seed);				
-
+	count_enc++;
+	CLOCK1=cpucycles();
+	GenMatrix(a, seed);
+	CLOCK2=cpucycles();
+	clock_matrix=clock_matrix+(CLOCK2-CLOCK1);
+				
+	CLOCK1=cpucycles();
 	GenSecret(skpv1,noiseseed);
+	CLOCK2=cpucycles();
+	clock_secret=clock_secret+(CLOCK2-CLOCK1);
+
 
 	// ----------- Load skpv1 into avx vectors ---------- 
 	for(i=0;i<SABER_K;i++){ 
@@ -330,31 +329,15 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 			  }
 		  }
  	 }
-
-
 	//-----------------matrix-vector multiplication and rounding
 
-	// Initialize res_avx[][] to 0	
-	for(i=0;i<SABER_K;i++){
-		for(j=0;j<SABER_N/16;j++){
-			res_avx[i][j]=_mm256_xor_si256(res_avx[i][j],res_avx[i][j]);
-		}
-	}	
-
-	// Matrix-vector multiplication; 
-	for(i=0;i<SABER_K;i++){
-		for(j=0;j<SABER_K;j++){
-
-			toom_cook_4way_avx(a_avx[i][j], sk_avx[j], SABER_Q, acc);
-
-			for(k=0;k<SABER_N/16;k++){
-				res_avx[i][k]=_mm256_add_epi16(res_avx[i][k],acc[k]);
-				res_avx[i][k]=_mm256_and_si256(res_avx[i][k],mod); //reduction
-				acc[k]=_mm256_xor_si256(acc[k],acc[k]); //clear the accumulator
-			}
-			
-		}
+	CLOCK1=cpucycles();
+	for(j=0;j<NUM_POLY;j++){
+		TC_eval(sk_avx[j], b_bucket[j]);
 	}
+	matrix_vector_mul(a_avx, b_bucket, res_avx, 0);// Matrix-vector multiplication; Matrix in normal order
+	CLOCK2=cpucycles();
+	clock_mv_vv_mul= clock_mv_vv_mul + (CLOCK2-CLOCK1);
 	
 	// Now truncation
 
@@ -391,24 +374,18 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 	}
 
 	// InnerProduct
-	for(k=0;k<SABER_N/16;k++){
-		vprime_avx[k]=_mm256_xor_si256(vprime_avx[k],vprime_avx[k]);
-	}
+	//for(k=0;k<SABER_N/16;k++){
+	//	vprime_avx[k]=_mm256_xor_si256(vprime_avx[k],vprime_avx[k]);
+	//}
 
 	// vector-vector scalar multiplication with mod p
-	clock1=cpucycles();
-	count_mul++;
-	for(j=0;j<SABER_K;j++){
-		toom_cook_4way_avx(pkcl_avx[j], sk_avx[j], SABER_P, acc);
 
-			for(k=0;k<SABER_N/16;k++){
-				vprime_avx[k]=_mm256_add_epi16(vprime_avx[k],acc[k]);
-				vprime_avx[k]=_mm256_and_si256(vprime_avx[k],mod_p); //reduction
-				acc[k]=_mm256_xor_si256(acc[k],acc[k]); //clear the accumulator
-			}
-	}
-	clock2=cpucycles();
-	clock_mul=clock_mul+(clock2-clock1);
+	CLOCK1=cpucycles();
+	vector_vector_mul(pkcl_avx, b_bucket, vprime_avx);
+	CLOCK2=cpucycles();
+	clock_mv_vv_mul= clock_mv_vv_mul + (CLOCK2-CLOCK1);
+
+
 
 	// Computation of v'+h1 
 	for(i=0;i<SABER_N/16;i++){//adding h1
@@ -463,27 +440,23 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, unsigned char message_dec[])
 {
 
-	uint32_t i,j,k;
-	
-	
+	uint32_t i,j;
 	uint16_t sksv[SABER_K][SABER_N]; //secret key of the server
-	
-
 	uint16_t pksv[SABER_K][SABER_N];
-	
 	uint16_t message_dec_unpacked[SABER_KEYBYTES*8];	// one element containes on decrypted bit;
-
 	uint8_t scale_ar[SABER_SCALEBYTES_KEM];
 	uint16_t op[SABER_N];
+
+	uint64_t CLOCK1, CLOCK2;
 
 	//--------------AVX declaration------------------
 	
 
-	  __m256i mod_p;
+	  //__m256i mod_p;
 	  
 	  __m256i v_avx[SABER_N/16];
 	  
-	  __m256i acc[2*SABER_N/16];
+	  //__m256i acc[2*SABER_N/16];
 
 	  __m256i sksv_avx[SABER_K][SABER_N/16];
 	  __m256i pksv_avx[SABER_K][SABER_N/16];
@@ -491,10 +464,11 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 	  mask_ar[0]=~(0UL);mask_ar[1]=~(0UL);mask_ar[2]=~(0UL);mask_ar[3]=~(0UL);
 	  mask_load = _mm256_loadu_si256 ((__m256i const *)mask_ar);
 
-	  mod_p=_mm256_set1_epi16(SABER_P-1);
+	  //mod_p=_mm256_set1_epi16(SABER_P-1);
 
-	H2_avx=_mm256_set1_epi16(h2);
+	  H2_avx=_mm256_set1_epi16(h2);
 
+	  __m256i b_bucket[NUM_POLY][SCHB_N*4];
 	//--------------AVX declaration ends------------------
 	
  	load_values();
@@ -517,16 +491,18 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 
 
 	// InnerProduct(b', s, mod p)
-	for(j=0;j<SABER_K;j++){
+	CLOCK1=cpucycles();
+	count_mul++;
 
-		toom_cook_4way_avx(pksv_avx[j], sksv_avx[j], SABER_P, acc);
-
-			for(k=0;k<SABER_N/16;k++){
-				v_avx[k]=_mm256_add_epi16(v_avx[k],acc[k]);
-				v_avx[k]=_mm256_and_si256(v_avx[k],mod_p); //reduction
-				acc[k]=_mm256_xor_si256(acc[k],acc[k]); //clear the accumulator
-			}
+	for(j=0;j<NUM_POLY;j++){
+		TC_eval(sksv_avx[j], b_bucket[j]);
 	}
+
+	vector_vector_mul(pksv_avx, b_bucket, v_avx);
+
+	CLOCK2=cpucycles();
+	clock_mul=clock_mul+(CLOCK2-CLOCK1);
+
 
 	for(i=0; i<SABER_N/16; i++){
 		_mm256_maskstore_epi32 ((int *)(message_dec_unpacked+i*16), mask_load, v_avx[i]);
@@ -566,5 +542,41 @@ void POL2MSG(uint16_t *message_dec_unpacked, unsigned char *message_dec){
 		message_dec[j] = message_dec[j] | (message_dec_unpacked[j*8 + i] <<i);
 	} 
 
+}
+
+void matrix_vector_mul(__m256i a1_avx_combined[NUM_POLY][NUM_POLY][AVX_N1], __m256i b_bucket[NUM_POLY][SCHB_N*4], __m256i res_avx[NUM_POLY][AVX_N1], int isTranspose){
+
+
+
+	int64_t i,j;
+
+	__m256i c_bucket[2*SCM_SIZE*4]; //Holds results for 9 Karatsuba at a time
+
+	for(i=0;i<NUM_POLY;i++){
+		for(j=0;j<NUM_POLY;j++){
+
+			if(isTranspose==0){
+				toom_cook_4way_avx_n1(a1_avx_combined[i][j], b_bucket[j], c_bucket, j);
+			}
+			else{
+				toom_cook_4way_avx_n1(a1_avx_combined[j][i], b_bucket[j], c_bucket, j);
+			}
+		}
+
+		TC_interpol(c_bucket, res_avx[i]);
+	}
+
+}
+
+void vector_vector_mul(__m256i a_avx[NUM_POLY][AVX_N1], __m256i b_bucket[NUM_POLY][SCHB_N*4], __m256i res_avx[AVX_N1]){
+
+	int64_t i;
+
+	__m256i c_bucket[2*SCM_SIZE*4]; //Holds results for 9 Karatsuba at a time
+
+	for(i=0;i<NUM_POLY;i++){
+		toom_cook_4way_avx_n1(a_avx[i], b_bucket[i], c_bucket, i);		
+	}
+	TC_interpol(c_bucket, res_avx);
 }
 
