@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "SABER_indcpa.h"
-#include "kem.h"
+#include "api.h"
 #include "verify.h"
 #include "rng.h"
 #include "fips202.h"

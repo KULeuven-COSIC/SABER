@@ -2,9 +2,8 @@
 #include "../poly.h"
 #include "../rng.h"
 #include "../SABER_indcpa.h"
-#include "../kem.h"
-#include "cpucycles.c"
 #include "../verify.h"
+#include "cpucycles.c"
 #include<stdio.h>
 #include<stdint.h>
 #include<stdlib.h>
