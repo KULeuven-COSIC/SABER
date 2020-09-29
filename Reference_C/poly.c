@@ -18,34 +18,19 @@ void MatrixVectorMul(const uint16_t A[SABER_K][SABER_K][SABER_N], uint16_t skpv[
 	uint16_t acc[SABER_N]; 
 	int32_t i,j,k;
 
-	if(transpose==1){
-		for(i=0;i<SABER_K;i++){
-			for(j=0;j<SABER_K;j++){
-				pol_mul(A[j][i], skpv[j], acc, SABER_Q, SABER_N);			
+	for(i=0;i<SABER_K;i++){
+		for(j=0;j<SABER_K;j++){
+			pol_mul((transpose) ? A[j][i] : A[i][j], skpv[j], acc, SABER_Q, SABER_N);			
 
-				for(k=0;k<SABER_N;k++){
-					res[i][k]=res[i][k]+acc[k];
-					res[i][k]=(res[i][k]&mod); //reduction mod p
-					acc[k]=0; //clear the accumulator
-				}
-			
+			for(k=0;k<SABER_N;k++){
+				res[i][k]=res[i][k]+acc[k];
+				res[i][k]=(res[i][k]&mod); //reduction mod p
+				acc[k]=0; //clear the accumulator
 			}
+		
 		}
 	}
-	else{
 
-		for(i=0;i<SABER_K;i++){
-			for(j=0;j<SABER_K;j++){
-				pol_mul(A[i][j], skpv[j], acc, SABER_Q, SABER_N);			
-				for(k=0;k<SABER_N;k++){
-					res[i][k]=res[i][k]+acc[k];
-					res[i][k]=res[i][k]&mod; //reduction
-					acc[k]=0; //clear the accumulator
-				}
-			
-			}
-		}
-	}
 				
 
 }
