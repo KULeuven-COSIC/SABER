@@ -19,7 +19,14 @@ void MatrixVectorMul(const uint16_t A[SABER_K][SABER_K][SABER_N], const uint16_t
 	{
 		for (size_t j = 0; j < SABER_K; j++)
 		{
-			poly_mul_acc((transpose) ? A[j][i] : A[i][j], s[j], res[i]);
+			if (transpose == 1)
+			{
+				poly_mul_acc(A[j][i], s[j], res[i]);
+			}
+			else
+			{
+				poly_mul_acc(A[i][j], s[j], res[i]);
+			}	
 		}
 	}
 }
