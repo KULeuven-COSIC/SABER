@@ -28,6 +28,8 @@ fprintBstr(char *S, unsigned char *A, unsigned long long L)
 	printf("\n");
 }
 
+uint64_t clock1,clock2;
+uint64_t clock_kp_mv,clock_cl_mv, clock_kp_sm, clock_cl_sm;
 
 int test_kem_cca()
 {

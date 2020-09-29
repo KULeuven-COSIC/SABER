@@ -1,14 +1,10 @@
 #ifndef INDCPA_H
 #define INDCPA_H
 
-void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk);
-void indcpa_kem_enc(unsigned char *message, unsigned char *noiseseed, const unsigned char *pk, unsigned char *ciphertext);
-void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, unsigned char *message_dec);
+#include "SABER_params.h"
 
-
-uint64_t clock1,clock2;
-uint64_t clock_kp_mv,clock_cl_mv, clock_kp_sm, clock_cl_sm;
-
+void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES]);
+void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER_NOISE_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t ciphertext[SABER_BYTES_CCA_DEC]);
+void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], uint8_t m[SABER_KEYBYTES]);
 
 #endif
-
