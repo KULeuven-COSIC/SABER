@@ -12,26 +12,25 @@
 #include "../verify.h"
 #include "cpucycles.c"
 
-void
-fprintBstr(char *S, unsigned char *A, unsigned long long L)
-{
-	unsigned long long  i;
+// void fprintBstr(char *S, unsigned char *A, unsigned long long L)
+// {
+// 	unsigned long long  i;
 
-	printf("%s", S);
+// 	printf("%s", S);
 
-	for ( i=0; i<L; i++ )
-		printf("%02X", A[i]);
+// 	for ( i=0; i<L; i++ )
+// 		printf("%02X", A[i]);
 
-	if ( L == 0 )
-		printf("00");
+// 	if ( L == 0 )
+// 		printf("00");
 
-	printf("\n");
-}
+// 	printf("\n");
+// }
 
 uint64_t clock1,clock2;
 uint64_t clock_kp_mv,clock_cl_mv, clock_kp_sm, clock_cl_sm;
 
-int test_kem_cca()
+static int test_kem_cca()
 {
 
 

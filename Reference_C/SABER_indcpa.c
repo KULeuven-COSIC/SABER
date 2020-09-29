@@ -17,7 +17,7 @@
 
 void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES])
 {
-	uint16_t A[SABER_K][SABER_K][SABER_N]; 
+	uint16_t A[SABER_K][SABER_K][SABER_N];
 	uint16_t s[SABER_K][SABER_N];
 	uint16_t b[SABER_K][SABER_N] = {0};
 
@@ -28,8 +28,8 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 	shake128(seed_A, SABER_SEEDBYTES, seed_A, SABER_SEEDBYTES); // for not revealing system RNG state
 	randombytes(seed_s, SABER_NOISE_SEEDBYTES);
 
-	GenMatrix(A, seed_A); 
-	GenSecret(s, seed_s); 
+	GenMatrix(A, seed_A);
+	GenSecret(s, seed_s);
 	MatrixVectorMul(A, s, b, 1);
 
 	for (size_t i = 0; i < SABER_K; i++)
@@ -41,23 +41,23 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 	}
 
 	POLVECq2BS(sk, s);
-	POLVECp2BS(pk, b); 
+	POLVECp2BS(pk, b);
 	memcpy(pk + SABER_POLYVECCOMPRESSEDBYTES, seed_A, sizeof(seed_A));
 }
 
 void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER_NOISE_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t ciphertext[SABER_BYTES_CCA_DEC])
 {
-	uint16_t A[SABER_K][SABER_K][SABER_N]; 
+	uint16_t A[SABER_K][SABER_K][SABER_N];
 	uint16_t sp[SABER_K][SABER_N];
 	uint16_t bp[SABER_K][SABER_N] = {0};
 	uint16_t vp[SABER_N] = {0};
 	uint16_t mp[SABER_N];
-	uint16_t b[SABER_K][SABER_N]; 
+	uint16_t b[SABER_K][SABER_N];
 
 	const uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
 
 	GenMatrix(A, seed_A);
-	GenSecret(sp, seed_sp); 
+	GenSecret(sp, seed_sp);
 	MatrixVectorMul(A, sp, bp, 0);
 
 	for (size_t i = 0; i < SABER_K; i++)
@@ -76,21 +76,21 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 
 	for (size_t j = 0; j < SABER_N; j++)
 	{
-		vp[j] = (vp[j] - (mp[j] << (SABER_EP - 1)) + h1) >> (SABER_EP - SABER_ET);			
+		vp[j] = (vp[j] - (mp[j] << (SABER_EP - 1)) + h1) >> (SABER_EP - SABER_ET);
 	}
-	
-	POLT2BS(ciphertext+SABER_POLYVECCOMPRESSEDBYTES, vp);
+
+	POLT2BS(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, vp);
 }
 
 void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], uint8_t m[SABER_KEYBYTES])
 {
 
-	uint16_t s[SABER_K][SABER_N]; 
+	uint16_t s[SABER_K][SABER_N];
 	uint16_t b[SABER_K][SABER_N];
 	uint16_t v[SABER_N] = {0};
 	uint16_t cm[SABER_N];
 
-	BS2POLVECq(sk, s);		 
+	BS2POLVECq(sk, s);
 	BS2POLVECp(ciphertext, b);
 	InnerProd(b, s, v);
 	BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, cm);

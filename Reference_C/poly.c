@@ -52,6 +52,6 @@ void GenSecret(uint16_t s[SABER_K][SABER_N], const uint8_t seed[SABER_NOISE_SEED
 
 	for (size_t i = 0; i < SABER_K; i++)
 	{
-		cbd(s[i], buf + i * (SABER_COINBYTES/SABER_K));
+		cbd(s[i], buf + i * (SABER_COINBYTES / SABER_K));
 	}
 }

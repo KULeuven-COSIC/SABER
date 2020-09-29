@@ -12,7 +12,7 @@
 
 
 
-int test_kem_cca()
+static int test_kem_cca()
 {
 
 

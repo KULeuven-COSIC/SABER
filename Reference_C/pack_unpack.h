@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include "SABER_params.h"
 
-
 void POLT2BS(uint8_t bytes[SABER_SCALEBYTES_KEM], const uint16_t data[SABER_N]);
 void BS2POLT(const uint8_t bytes[SABER_SCALEBYTES_KEM], uint16_t data[SABER_N]);
 

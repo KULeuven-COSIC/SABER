@@ -11,7 +11,7 @@
 
 /* uses 10 registers */
 static void karatsuba_simple(const uint16_t a_1[N_SB], const uint16_t b_1[N_SB], uint16_t result_final[N_SB_RES])
-{ 
+{
 
 	const uint16_t N = 64;
 	uint16_t d01[N / 2 - 1];
@@ -102,7 +102,7 @@ static void karatsuba_simple(const uint16_t a_1[N_SB], const uint16_t b_1[N_SB],
 	}
 }
 
-static void toom_cook_4way(const uint16_t a1[SABER_N], const uint16_t b1[SABER_N], uint16_t result[2*SABER_N])
+static void toom_cook_4way(const uint16_t a1[SABER_N], const uint16_t b1[SABER_N], uint16_t result[2 * SABER_N])
 {
 	uint16_t inv3 = 43691, inv9 = 36409, inv15 = 61167;
 
@@ -227,12 +227,12 @@ static void toom_cook_4way(const uint16_t a1[SABER_N], const uint16_t b1[SABER_N
 /* res += a*b */
 void poly_mul_acc(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t res[SABER_N])
 {
-	uint16_t c[2*SABER_N] = {0};
+	uint16_t c[2 * SABER_N] = {0};
 
 	toom_cook_4way(a, b, c);
 
 	/* reduction */
-	for (size_t i = SABER_N; i < 2*SABER_N; i++)
+	for (size_t i = SABER_N; i < 2 * SABER_N; i++)
 	{
 		res[i - SABER_N] += (c[i - SABER_N] - c[i]);
 	}

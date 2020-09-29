@@ -5,7 +5,6 @@
 //  Copyright © 2017 Bassham, Lawrence E (Fed). All rights reserved.
 //
 
-
 //   This is a sample 'api.h' for use 'sign.c'
 
 #ifndef api_h
@@ -16,7 +15,7 @@
 #define Saber 2
 #define FireSaber 3
 
-// Change the algorithm name 
+// Change the algorithm name
 //#define SABER_TYPE LightSaber
 #define SABER_TYPE Saber
 //#define SABER_TYPE FireSaber
@@ -44,7 +43,6 @@
 	#define CRYPTO_CIPHERTEXTBYTES 1472
 	#define Saber_type 3
 #endif
-
 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
 int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
