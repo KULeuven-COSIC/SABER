@@ -34,27 +34,21 @@ void InnerProd(const uint16_t b[SABER_K][SABER_N], const uint16_t s[SABER_K][SAB
 
 void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const unsigned char *seed) 
 {
-  unsigned int one_vector=13*SABER_N/8;
-  unsigned int byte_bank_length=SABER_K*SABER_K*one_vector;
-  unsigned char buf[byte_bank_length];
+	unsigned int one_vector=13*SABER_N/8;
+	unsigned int byte_bank_length=SABER_K*SABER_K*one_vector;
+	unsigned char buf[byte_bank_length];
 
-  uint16_t temp_ar[SABER_N];
+	uint16_t temp_ar[SABER_N];
 
-  int i,j,k;
-  uint16_t mod = (SABER_Q-1);
+	int i,j,k;
+	uint16_t mod = (SABER_Q-1);
 
-  shake128(buf,byte_bank_length,seed,SABER_SEEDBYTES);
+	shake128(buf,byte_bank_length,seed,SABER_SEEDBYTES);
   
-  for(i=0;i<SABER_K;i++)
-  {
-    for(j=0;j<SABER_K;j++)
-    {
-	BS2POL(buf+(i*SABER_K+j)*one_vector,temp_ar);
-	for(k=0;k<SABER_N;k++){
-		A[i][j][k] = (temp_ar[k])& mod ;
+	for (size_t i = 0; i < SABER_K; i++)
+	{
+		BS2POLVECq(buf + i * SABER_K * SABER_POLYBYTES, A[i]);
 	}
-    }
-  }
 
 
 }

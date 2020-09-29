@@ -59,12 +59,12 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 	
 	//------------------unload and pack sk=3 x (256 coefficients of 14 bits)-------
 		
-	POLVEC2BS(sk, skpv, SABER_Q);
+	POLVECq2BS(sk, skpv);
 
 	//------------------unload and pack pk=256 bits seed and 3 x (256 coefficients of 11 bits)-------
 
 	
-	POLVEC2BS(pk, res, SABER_P); // load the public-key coefficients
+	POLVECp2BS(pk, res); // load the public-key coefficients
 
 
 
@@ -125,7 +125,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 		}
 	}
 
-	POLVEC2BS(ciphertext, res, SABER_P);
+	POLVECp2BS(ciphertext, res);
 
 //*******************client matrix-vector multiplication ends************************************
 
@@ -134,7 +134,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 	//-------unpack the public_key
 
 	//pkcl is the b in the protocol
-	BS2POLVEC(pk,pkcl,SABER_P);
+	BS2POLVECp(pk,pkcl);
 
 
 
@@ -179,18 +179,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 	}
 
 
-	#if Saber_type == 1
-		SABER_pack_3bit(msk_c, vprime);
-	#elif Saber_type == 2
-		SABER_pack_4bit(msk_c, vprime);
-	#elif Saber_type == 3
-		SABER_pack_6bit(msk_c, vprime);
-	#endif
-
-
-	for(j=0;j<SABER_SCALEBYTES_KEM;j++){
-		ciphertext[SABER_POLYVECCOMPRESSEDBYTES + j] = msk_c[j];
-	}
+	POLT2BS(ciphertext+SABER_POLYVECCOMPRESSEDBYTES, vprime);
 }
 
 
@@ -214,8 +203,8 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 	uint16_t op[SABER_N];
 
 	
-	BS2POLVEC(sk, sksv, SABER_Q); //sksv is the secret-key
-	BS2POLVEC(ciphertext, pksv, SABER_P); //pksv is the ciphertext
+	BS2POLVECq(sk, sksv); //sksv is the secret-key
+	BS2POLVECp(ciphertext, pksv); //pksv is the ciphertext
 
 	// vector-vector scalar multiplication with mod p
 	for(i=0;i<SABER_N;i++)
@@ -235,13 +224,7 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 		scale_ar[i]=ciphertext[SABER_POLYVECCOMPRESSEDBYTES+i];
 	}
 
-	#if Saber_type == 1
-		SABER_un_pack3bit(scale_ar, op);
-	#elif Saber_type == 2
-		SABER_un_pack4bit(scale_ar, op);
-	#elif Saber_type == 3
-		SABER_un_pack6bit(scale_ar, op);
-	#endif
+	BS2POLT(scale_ar, op);
 
 
 	//addition of h1
@@ -251,7 +234,7 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 
 	// pack decrypted message
 
-	POL2MSG(v, message_dec);
+	POLmsg2BS(message_dec, v);
 
 
 }

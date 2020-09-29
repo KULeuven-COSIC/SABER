@@ -2,29 +2,20 @@
 #define PACK_UNPACK_H
 
 #include <stdio.h>
-#include<stdint.h>
+#include <stdint.h>
 #include "SABER_params.h"
 
 
-void SABER_pack_3bit(uint8_t *bytes, uint16_t *data);
+void POLT2BS(uint8_t bytes[SABER_SCALEBYTES_KEM], const uint16_t data[SABER_N]);
+void BS2POLT(const uint8_t bytes[SABER_SCALEBYTES_KEM], uint16_t data[SABER_N]);
 
-void SABER_un_pack3bit(uint8_t *bytes, uint16_t *data);
+void POLVECq2BS(uint8_t bytes[SABER_POLYVECBYTES], const uint16_t data[SABER_K][SABER_N]);
+void POLVECp2BS(uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], const uint16_t data[SABER_K][SABER_N]);
 
-void SABER_pack_4bit(uint8_t *bytes, uint16_t *data);
+void BS2POLVECq(const uint8_t bytes[SABER_POLYVECBYTES], uint16_t data[SABER_K][SABER_N]);
+void BS2POLVECp(const uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], uint16_t data[SABER_K][SABER_N]);
 
-void SABER_un_pack4bit(const unsigned char *bytes, uint16_t *ar);
-
-void SABER_pack_6bit(uint8_t *bytes, uint16_t *data);
-
-void SABER_un_pack6bit(const unsigned char *bytes, uint16_t *data);
-
-
-void BS2POL(const unsigned char *bytes, uint16_t data[SABER_N]);
-
-void POLVEC2BS(uint8_t *bytes, uint16_t data[SABER_K][SABER_N], uint16_t modulus);
-
-void BS2POLVEC(const unsigned char *bytes, uint16_t data[SABER_K][SABER_N], uint16_t modulus);
-
-void POL2MSG(uint16_t *message_dec_unpacked, unsigned char *message_dec);
+void BS2POLmsg(const uint8_t bytes[SABER_KEYBYTES], uint16_t data[SABER_N]);
+void POLmsg2BS(uint8_t bytes[SABER_KEYBYTES], const uint16_t data[SABER_N]);
 
 #endif
