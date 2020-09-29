@@ -6,11 +6,12 @@ by : Joppe Bos, Leo Ducas, Eike Kiltz, Tancrede Lepoint,
 Vadim Lyubashevsky, John M. Schanck, Peter Schwabe & Damien stehle
 ----------------------------------------------------------------------*/
 
-#include "api.h"
-#include<stdint.h>
 #include "SABER_params.h"
+#include "api.h"
+#include "cbd.h"
+#include <stdint.h>
 
-static uint64_t load_littleendian(const unsigned char *x, int bytes)
+static uint64_t load_littleendian(const uint8_t *x, int bytes)
 {
   int i;
   uint64_t r = x[0];
@@ -19,11 +20,8 @@ static uint64_t load_littleendian(const unsigned char *x, int bytes)
   return r;
 }
 
-
-void cbd(uint16_t *r, const unsigned char *buf)
+void cbd(uint16_t s[SABER_N], const uint8_t buf[SABER_COINBYTES])
 {
-	uint16_t Qmod_minus1=SABER_Q-1;
-
 #if Saber_type == 3
   uint32_t t,d, a[4], b[4];
   int i,j;
@@ -44,10 +42,10 @@ void cbd(uint16_t *r, const unsigned char *buf)
     a[3] = (d >> 18) & 0x7;
     b[3] = (d >> 21);
 
-    r[4*i+0] = (uint16_t)(a[0]  - b[0]) & Qmod_minus1;
-    r[4*i+1] = (uint16_t)(a[1]  - b[1]) & Qmod_minus1;
-    r[4*i+2] = (uint16_t)(a[2]  - b[2]) & Qmod_minus1;
-    r[4*i+3] = (uint16_t)(a[3]  - b[3]) & Qmod_minus1;
+    s[4*i+0] = (uint16_t)(a[0]  - b[0]);
+    s[4*i+1] = (uint16_t)(a[1]  - b[1]);
+    s[4*i+2] = (uint16_t)(a[2]  - b[2]);
+    s[4*i+3] = (uint16_t)(a[3]  - b[3]);
 
   }
 #elif Saber_type == 2
@@ -70,10 +68,10 @@ void cbd(uint16_t *r, const unsigned char *buf)
     a[3] = (d >> 24) & 0xf;
     b[3] = (d >> 28);
 
-    r[4*i+0] = (uint16_t)(a[0]  - b[0]) & Qmod_minus1;
-    r[4*i+1] = (uint16_t)(a[1]  - b[1]) & Qmod_minus1;
-    r[4*i+2] = (uint16_t)(a[2]  - b[2]) & Qmod_minus1;
-    r[4*i+3] = (uint16_t)(a[3]  - b[3]) & Qmod_minus1;
+    s[4*i+0] = (uint16_t)(a[0]  - b[0]);
+    s[4*i+1] = (uint16_t)(a[1]  - b[1]);
+    s[4*i+2] = (uint16_t)(a[2]  - b[2]);
+    s[4*i+3] = (uint16_t)(a[3]  - b[3]);
   }
 #elif Saber_type == 1
   uint64_t t,d, a[4], b[4];
@@ -95,10 +93,10 @@ void cbd(uint16_t *r, const unsigned char *buf)
     a[3] = (d >> 30) & 0x1f;
     b[3] = (d >> 35);
 
-    r[4*i+0] = (uint16_t)(a[0]  - b[0]) & Qmod_minus1;
-    r[4*i+1] = (uint16_t)(a[1]  - b[1]) & Qmod_minus1;
-    r[4*i+2] = (uint16_t)(a[2]  - b[2]) & Qmod_minus1;
-    r[4*i+3] = (uint16_t)(a[3]  - b[3]) & Qmod_minus1;
+    s[4*i+0] = (uint16_t)(a[0]  - b[0]);
+    s[4*i+1] = (uint16_t)(a[1]  - b[1]);
+    s[4*i+2] = (uint16_t)(a[2]  - b[2]);
+    s[4*i+3] = (uint16_t)(a[3]  - b[3]);
   }
 #else
 #error "Unsupported SABER parameter."

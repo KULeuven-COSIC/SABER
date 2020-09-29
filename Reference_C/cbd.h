@@ -9,8 +9,7 @@ Vadim Lyubashevsky, John M. Schanck, Peter Schwabe & Damien stehle
 #define CBD_H
 
 #include <stdint.h>
-#include "poly.h"
 
-void cbd(uint16_t *r, const unsigned char *buf);
+void cbd(uint16_t s[SABER_N], const uint8_t buf[SABER_COINBYTES]);
 
 #endif
