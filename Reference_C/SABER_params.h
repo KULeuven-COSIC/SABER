@@ -1,32 +1,37 @@
-#include "api.h"
-
 #ifndef PARAMS_H
 #define PARAMS_H
 
-#if Saber_type == 1
-	#define SABER_K 2
+/* Change this for different security strengths */
+// #define SABER_K 2 /* LightSaber */
+#define SABER_K 3 /* Saber */
+// #define SABER_K 4 /* FireSaber */
+
+/* Uncomment this to enable uSaber */
+#define uSaber
+
+/* Uncomment this to enable Saber-90s */
+// #define Saber90s
+
+/* Don't change anything below this line */
+#if SABER_K == 2
 	#define SABER_MU 10
 	#define SABER_ET 3
-
-#elif Saber_type == 2
-	#define SABER_K 3
+#elif SABER_K == 3
 	#define SABER_MU 8
 	#define SABER_ET 4
-
-#elif Saber_type == 3
-	#define SABER_K 4
+#elif SABER_K == 4
 	#define SABER_MU 6
 	#define SABER_ET 6
 #endif
 
-#ifndef uSaber
-	#define SABER_EQ 13
-	#define SABER_Q 8192
-	#define SABER_COINBYTES (SABER_MU * SABER_N * SABER_K / 8)
-#else
+#ifdef uSaber
 	#define SABER_EQ 12
 	#define SABER_Q 4096
-	#define SABER_COINBYTES (2 * SABER_N * SABER_K / 8)
+	#define SABER_POLYCOINBYTES (2 * SABER_N / 8)
+#else
+	#define SABER_EQ 13
+	#define SABER_Q 8192
+	#define SABER_POLYCOINBYTES (SABER_MU * SABER_N / 8)
 #endif
 
 #define SABER_EP 10
