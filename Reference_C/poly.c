@@ -22,7 +22,7 @@ void GenSecret(uint16_t r[SABER_K][SABER_N],const unsigned char *seed){
 
 		uint8_t buf[buf_size];
 
-		shake128(buf, buf_size, seed,SABER_NOISESEEDBYTES);
+		shake128(buf, buf_size, seed,SABER_NOISE_SEEDBYTES);
 
 		for(i=0;i<SABER_K;i++)
 		{
