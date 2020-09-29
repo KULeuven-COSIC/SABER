@@ -13,7 +13,7 @@ Vadim Lyubashevsky, John M. Schanck, Peter Schwabe & Damien stehle
 #include "cbd.h"
 #include "fips202.h"
 
-void MatrixVectorMul(polyvec *a, uint16_t skpv[SABER_K][SABER_N], uint16_t res[SABER_K][SABER_N], uint16_t mod, int16_t transpose){
+void MatrixVectorMul(const uint16_t A[SABER_K][SABER_K][SABER_N], uint16_t skpv[SABER_K][SABER_N], uint16_t res[SABER_K][SABER_N], uint16_t mod, int16_t transpose){
 
 	uint16_t acc[SABER_N]; 
 	int32_t i,j,k;
@@ -21,7 +21,7 @@ void MatrixVectorMul(polyvec *a, uint16_t skpv[SABER_K][SABER_N], uint16_t res[S
 	if(transpose==1){
 		for(i=0;i<SABER_K;i++){
 			for(j=0;j<SABER_K;j++){
-				pol_mul((uint16_t *)&a[j].vec[i], skpv[j], acc, SABER_Q, SABER_N);			
+				pol_mul(A[j][i], skpv[j], acc, SABER_Q, SABER_N);			
 
 				for(k=0;k<SABER_N;k++){
 					res[i][k]=res[i][k]+acc[k];
@@ -36,7 +36,7 @@ void MatrixVectorMul(polyvec *a, uint16_t skpv[SABER_K][SABER_N], uint16_t res[S
 
 		for(i=0;i<SABER_K;i++){
 			for(j=0;j<SABER_K;j++){
-				pol_mul((uint16_t *)&a[i].vec[j], skpv[j], acc, SABER_Q, SABER_N);			
+				pol_mul(A[i][j], skpv[j], acc, SABER_Q, SABER_N);			
 				for(k=0;k<SABER_N;k++){
 					res[i][k]=res[i][k]+acc[k];
 					res[i][k]=res[i][k]&mod; //reduction
@@ -72,7 +72,7 @@ void InnerProd(uint16_t pkcl[SABER_K][SABER_N],uint16_t skpv[SABER_K][SABER_N],u
 
 }
 
-void GenMatrix(polyvec *a, const unsigned char *seed) 
+void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const unsigned char *seed) 
 {
   unsigned int one_vector=13*SABER_N/8;
   unsigned int byte_bank_length=SABER_K*SABER_K*one_vector;
@@ -91,7 +91,7 @@ void GenMatrix(polyvec *a, const unsigned char *seed)
     {
 	BS2POL(buf+(i*SABER_K+j)*one_vector,temp_ar);
 	for(k=0;k<SABER_N;k++){
-		a[i].vec[j].coeffs[k] = (temp_ar[k])& mod ;
+		A[i][j][k] = (temp_ar[k])& mod ;
 	}
     }
   }

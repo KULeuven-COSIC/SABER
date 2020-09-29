@@ -19,7 +19,7 @@
 
 void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 {
-  polyvec a[SABER_K];// skpv;
+  uint16_t A[SABER_K][SABER_K][SABER_N];
 
   uint16_t skpv[SABER_K][SABER_N];
  
@@ -35,7 +35,7 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
   shake128(seed, SABER_SEEDBYTES, seed, SABER_SEEDBYTES); // for not revealing system RNG state
   randombytes(noiseseed, SABER_COINBYTES);
 
-  GenMatrix(a, seed);	//sample matrix A
+  GenMatrix(A, seed);	//sample matrix A
 
   GenSecret(skpv,noiseseed);//generate secret from constant-time binomial distribution
 
@@ -47,7 +47,7 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 		}
 	}
 
-	MatrixVectorMul(a,skpv,res,SABER_Q-1,1);
+	MatrixVectorMul(A,skpv,res,SABER_Q-1,1);
 	
 	//-----now rounding
 	for(i=0;i<SABER_K;i++){ //shift right 3 bits
@@ -78,7 +78,7 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, const unsigned char *pk, unsigned char *ciphertext)
 { 
 	uint32_t i,j,k;
-	polyvec a[SABER_K];		// skpv;
+	uint16_t A[SABER_K][SABER_K][SABER_N];
 	unsigned char seed[SABER_SEEDBYTES];
 	uint16_t pkcl[SABER_K][SABER_N]; 	//public key of received by the client
 
@@ -102,7 +102,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 		seed[i]=pk[ SABER_POLYVECCOMPRESSEDBYTES + i]; 
 	}
 
-	GenMatrix(a, seed);				
+	GenMatrix(A, seed);				
 
 	GenSecret(skpv1,noiseseed);//generate secret from constant-time binomial distribution
 
@@ -114,7 +114,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 		}
 	}
 
-	MatrixVectorMul(a,skpv1,res,SABER_Q-1,0);
+	MatrixVectorMul(A,skpv1,res,SABER_Q-1,0);
 	
 	  //-----now rounding
 
