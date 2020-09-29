@@ -253,3 +253,16 @@ void BS2POLVEC(const unsigned char *bytes, uint16_t data[SABER_K][SABER_N], uint
 		BS2POLVECq(bytes, data);
 
 }
+
+void POL2MSG(uint16_t *message_dec_unpacked, unsigned char *message_dec){
+
+	int32_t i,j;
+
+	for(j=0; j<SABER_KEYBYTES; j++)
+	{
+		message_dec[j] = 0;
+		for(i=0; i<8; i++)
+		message_dec[j] = message_dec[j] | (message_dec_unpacked[j*8 + i] <<i);
+	} 
+
+}

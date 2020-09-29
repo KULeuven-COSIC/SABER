@@ -21,6 +21,8 @@ typedef struct{
   poly vec[SABER_K];
 } polyvec;
 
+void MatrixVectorMul(polyvec *a, uint16_t skpv[SABER_K][SABER_N], uint16_t res[SABER_K][SABER_N], uint16_t mod, int16_t transpose);
+void InnerProd(uint16_t pkcl[SABER_K][SABER_N],uint16_t skpv[SABER_K][SABER_N],uint16_t mod,uint16_t res[SABER_N]);
 void GenSecret(uint16_t r[SABER_K][SABER_N],const unsigned char *seed);
 
 #endif

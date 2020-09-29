@@ -25,4 +25,6 @@ void POLVEC2BS(uint8_t *bytes, uint16_t data[SABER_K][SABER_N], uint16_t modulus
 
 void BS2POLVEC(const unsigned char *bytes, uint16_t data[SABER_K][SABER_N], uint16_t modulus);
 
+void POL2MSG(uint16_t *message_dec_unpacked, unsigned char *message_dec);
+
 #endif
