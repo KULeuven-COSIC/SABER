@@ -20,7 +20,7 @@ void MatrixVectorMul(const uint16_t A[SABER_K][SABER_K][SABER_N], uint16_t skpv[
 
 	for(i=0;i<SABER_K;i++){
 		for(j=0;j<SABER_K;j++){
-			pol_mul((transpose) ? A[j][i] : A[i][j], skpv[j], acc, SABER_Q, SABER_N);			
+			poly_mul((transpose) ? A[j][i] : A[i][j], skpv[j], acc);			
 
 			for(k=0;k<SABER_N;k++){
 				res[i][k]=res[i][k]+acc[k];
@@ -43,7 +43,7 @@ void InnerProd(uint16_t pkcl[SABER_K][SABER_N],uint16_t skpv[SABER_K][SABER_N],u
 
 	// vector-vector scalar multiplication with mod p
 	for(j=0;j<SABER_K;j++){
-		pol_mul(pkcl[j], skpv[j], acc , SABER_P, SABER_N);
+		poly_mul(pkcl[j], skpv[j], acc);
 
 			for(k=0;k<SABER_N;k++){
 				res[k]=res[k]+acc[k];
