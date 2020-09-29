@@ -10,7 +10,7 @@
 #include "../SABER_indcpa.h"
 #include "../kem.h"
 #include "../verify.h"
-#include "../cpucycles.c"
+#include "cpucycles.c"
 
 void
 fprintBstr(char *S, unsigned char *A, unsigned long long L)
@@ -41,7 +41,7 @@ int test_kem_cca()
   unsigned char entropy_input[48];
 	
   uint64_t i, j, repeat;
-  repeat=4000000;	
+  repeat=50;	
   uint64_t CLOCK1,CLOCK2;
   uint64_t CLOCK_kp,CLOCK_enc,CLOCK_dec;
 
