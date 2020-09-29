@@ -60,7 +60,7 @@ static const uint64_t KeccakF_RoundConstants[NROUNDS] =
     (uint64_t)0x8000000080008008ULL
 };
 
-void KeccakF1600_StatePermute(uint64_t * state)
+static void KeccakF1600_StatePermute(uint64_t * state)
 {
   int round;
 
@@ -417,60 +417,60 @@ void shake128(unsigned char *output, unsigned long long outlen,
 }
 
 
-void cshake128_simple_absorb(uint64_t s[25],
-                             uint16_t cstm, // 2-byte domain separator
-                             const unsigned char *in, unsigned long long inlen)
-{
-  unsigned char *sep = (unsigned char *)s;
-  unsigned int i;
+// void cshake128_simple_absorb(uint64_t s[25],
+//                              uint16_t cstm, // 2-byte domain separator
+//                              const unsigned char *in, unsigned long long inlen)
+// {
+//   unsigned char *sep = (unsigned char *)s;
+//   unsigned int i;
 
-  for(i=0;i<25;i++)
-    s[i] = 0;
+//   for(i=0;i<25;i++)
+//     s[i] = 0;
 
-  /* Absorb customization (domain-separation) string */
-  sep[0] = 0x01;
-  sep[1] = 0xa8;
-  sep[2] = 0x01;
-  sep[3] = 0x00;
-  sep[4] = 0x01;
-  sep[5] = 16; // fixed bitlen of cstm
-  sep[6] = cstm & 0xff;
-  sep[7] = cstm >> 8;
+//   /* Absorb customization (domain-separation) string */
+//   sep[0] = 0x01;
+//   sep[1] = 0xa8;
+//   sep[2] = 0x01;
+//   sep[3] = 0x00;
+//   sep[4] = 0x01;
+//   sep[5] = 16; // fixed bitlen of cstm
+//   sep[6] = cstm & 0xff;
+//   sep[7] = cstm >> 8;
 
-  KeccakF1600_StatePermute(s);
+//   KeccakF1600_StatePermute(s);
 
-  /* Absorb input */
-  keccak_absorb(s, SHAKE128_RATE, in, inlen, 0x04);
-}
-
-
-void cshake128_simple_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s)
-{
-  keccak_squeezeblocks(output, nblocks, s, SHAKE128_RATE);
-}
+//   /* Absorb input */
+//   keccak_absorb(s, SHAKE128_RATE, in, inlen, 0x04);
+// }
 
 
-void cshake128_simple(unsigned char *output, unsigned long long outlen, 
-                      uint16_t cstm, // 2-byte domain separator
-                      const unsigned char *in, unsigned long long inlen)
-{
-  uint64_t s[25];
-  unsigned char t[SHAKE128_RATE];
-  unsigned int i;
+// void cshake128_simple_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s)
+// {
+//   keccak_squeezeblocks(output, nblocks, s, SHAKE128_RATE);
+// }
 
-  cshake128_simple_absorb(s,cstm,in,inlen);
 
-  /* Squeeze output */
-  keccak_squeezeblocks(output, outlen/SHAKE128_RATE, s, SHAKE128_RATE);
-  output+=(outlen/SHAKE128_RATE)*SHAKE128_RATE;
+// void cshake128_simple(unsigned char *output, unsigned long long outlen, 
+//                       uint16_t cstm, // 2-byte domain separator
+//                       const unsigned char *in, unsigned long long inlen)
+// {
+//   uint64_t s[25];
+//   unsigned char t[SHAKE128_RATE];
+//   unsigned int i;
 
-  if(outlen%SHAKE128_RATE)
-  {
-    keccak_squeezeblocks(t, 1, s, SHAKE128_RATE);
-    for(i=0;i<outlen%SHAKE128_RATE;i++)
-      output[i] = t[i];
-  }
-}
+//   cshake128_simple_absorb(s,cstm,in,inlen);
+
+//   /* Squeeze output */
+//   keccak_squeezeblocks(output, outlen/SHAKE128_RATE, s, SHAKE128_RATE);
+//   output+=(outlen/SHAKE128_RATE)*SHAKE128_RATE;
+
+//   if(outlen%SHAKE128_RATE)
+//   {
+//     keccak_squeezeblocks(t, 1, s, SHAKE128_RATE);
+//     for(i=0;i<outlen%SHAKE128_RATE;i++)
+//       output[i] = t[i];
+//   }
+// }
 
 void sha3_256(unsigned char *output, const unsigned char *input,  unsigned long long inlen)
 {
