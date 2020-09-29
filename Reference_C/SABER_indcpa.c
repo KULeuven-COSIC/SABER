@@ -47,7 +47,7 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 		}
 	}
 
-	MatrixVectorMul(A,skpv,res,SABER_Q-1,1);
+	MatrixVectorMul(A,skpv,res,1);
 	
 	//-----now rounding
 	for(i=0;i<SABER_K;i++){ //shift right 3 bits
@@ -114,7 +114,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 		}
 	}
 
-	MatrixVectorMul(A,skpv1,res,SABER_Q-1,0);
+	MatrixVectorMul(A,skpv1,res,0);
 	
 	  //-----now rounding
 
@@ -148,7 +148,7 @@ void indcpa_kem_enc(unsigned char *message_received, unsigned char *noiseseed, c
 	}
 
 	// vector-vector scalar multiplication with mod p
-	InnerProd(pkcl,skpv1,mod_p,vprime);
+	InnerProd(pkcl,skpv1,vprime);
 
 	//addition of h1 to vprime
 	for(i=0;i<SABER_N;i++)
@@ -227,7 +227,7 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 		}
 	}
 
-	InnerProd(pksv,sksv,mod_p,v);
+	InnerProd(pksv,sksv,v);
 
 
 	//Extraction

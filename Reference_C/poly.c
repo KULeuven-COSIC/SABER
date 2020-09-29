@@ -13,48 +13,23 @@ Vadim Lyubashevsky, John M. Schanck, Peter Schwabe & Damien stehle
 #include "cbd.h"
 #include "fips202.h"
 
-void MatrixVectorMul(const uint16_t A[SABER_K][SABER_K][SABER_N], uint16_t skpv[SABER_K][SABER_N], uint16_t res[SABER_K][SABER_N], uint16_t mod, int16_t transpose){
-
-	uint16_t acc[SABER_N]; 
-	int32_t i,j,k;
-
-	for(i=0;i<SABER_K;i++){
-		for(j=0;j<SABER_K;j++){
-			poly_mul((transpose) ? A[j][i] : A[i][j], skpv[j], acc);			
-
-			for(k=0;k<SABER_N;k++){
-				res[i][k]=res[i][k]+acc[k];
-				res[i][k]=(res[i][k]&mod); //reduction mod p
-				acc[k]=0; //clear the accumulator
-			}
-		
+void MatrixVectorMul(const uint16_t A[SABER_K][SABER_K][SABER_N], const uint16_t s[SABER_K][SABER_N], uint16_t res[SABER_K][SABER_N], int16_t transpose)
+{
+	for (size_t i = 0; i < SABER_K; i++)
+	{
+		for (size_t j = 0; j < SABER_K; j++)
+		{
+			poly_mul_acc((transpose) ? A[j][i] : A[i][j], s[j], res[i]);
 		}
 	}
-
-				
-
 }
 
-void InnerProd(uint16_t pkcl[SABER_K][SABER_N],uint16_t skpv[SABER_K][SABER_N],uint16_t mod,uint16_t res[SABER_N]){
-
-
-	uint32_t j,k;
-	uint16_t acc[SABER_N]; 
-
-	// vector-vector scalar multiplication with mod p
-	for(j=0;j<SABER_K;j++){
-		poly_mul(pkcl[j], skpv[j], acc);
-
-			for(k=0;k<SABER_N;k++){
-				res[k]=res[k]+acc[k];
-				res[k]=res[k]&mod; //reduction
-				acc[k]=0; //clear the accumulator
-			}
+void InnerProd(const uint16_t b[SABER_K][SABER_N], const uint16_t s[SABER_K][SABER_N], uint16_t res[SABER_N])
+{
+	for (size_t j = 0; j < SABER_K; j++)
+	{
+		poly_mul_acc(b[j], s[j], res);
 	}
-
-
-
-
 }
 
 void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const unsigned char *seed) 
