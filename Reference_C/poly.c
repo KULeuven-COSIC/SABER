@@ -32,40 +32,26 @@ void InnerProd(const uint16_t b[SABER_K][SABER_N], const uint16_t s[SABER_K][SAB
 	}
 }
 
-void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const unsigned char *seed) 
+void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const uint8_t seed[SABER_SEEDBYTES])
 {
-	unsigned int one_vector=13*SABER_N/8;
-	unsigned int byte_bank_length=SABER_K*SABER_K*one_vector;
-	unsigned char buf[byte_bank_length];
+	uint8_t buf[SABER_K * SABER_POLYVECBYTES];
 
-	uint16_t temp_ar[SABER_N];
+	shake128(buf, sizeof(buf), seed, SABER_SEEDBYTES);
 
-	int i,j,k;
-	uint16_t mod = (SABER_Q-1);
-
-	shake128(buf,byte_bank_length,seed,SABER_SEEDBYTES);
-  
 	for (size_t i = 0; i < SABER_K; i++)
 	{
 		BS2POLVECq(buf + i * SABER_K * SABER_POLYBYTES, A[i]);
 	}
-
-
 }
 
-void GenSecret(uint16_t r[SABER_K][SABER_N],const unsigned char *seed){
+void GenSecret(uint16_t s[SABER_K][SABER_N], const uint8_t seed[SABER_NOISE_SEEDBYTES])
+{
+	uint8_t buf[SABER_COINBYTES];
 
+	shake128(buf, sizeof(buf), seed, SABER_NOISE_SEEDBYTES);
 
-		uint32_t i;
-
-		int32_t buf_size= SABER_MU*SABER_N*SABER_K/8;
-
-		uint8_t buf[buf_size];
-
-		shake128(buf, buf_size, seed,SABER_NOISE_SEEDBYTES);
-
-		for(i=0;i<SABER_K;i++)
-		{
-			cbd(r[i],buf+i*SABER_MU*SABER_N/8);
-		}
+	for (size_t i = 0; i < SABER_K; i++)
+	{
+		cbd(s[i], buf + i * (SABER_COINBYTES/SABER_K));
+	}
 }
