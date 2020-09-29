@@ -40,18 +40,38 @@ void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const uint8_t seed[SABER_S
 
 	for (size_t i = 0; i < SABER_K; i++)
 	{
-		BS2POLVECq(buf + i * SABER_K * SABER_POLYBYTES, A[i]);
+		BS2POLVECq(buf + i * SABER_POLYVECBYTES, A[i]);
 	}
 }
 
+#include <string.h>
+
 void GenSecret(uint16_t s[SABER_K][SABER_N], const uint8_t seed[SABER_NOISE_SEEDBYTES])
 {
-	uint8_t buf[SABER_COINBYTES];
+	uint8_t buf[SABER_K * SABER_POLYCOINBYTES];
 
 	shake128(buf, sizeof(buf), seed, SABER_NOISE_SEEDBYTES);
 
 	for (size_t i = 0; i < SABER_K; i++)
 	{
-		cbd(s[i], buf + i * (SABER_COINBYTES / SABER_K));
+
+	#ifndef uSaber
+		cbd(s[i], buf + i * SABER_POLYCOINBYTES);
+	#else
+
+		// struct int2_t {signed int bits:2;} two; 
+
+		for(size_t j=0;j<SABER_N/4;j++)
+		{
+			// s[i][4*j] = two.bits = ((buf[j + i * SABER_POLYCOINBYTES]) & 0x03); 
+			// s[i][4*j+1] = two.bits = ((buf[j + i * SABER_POLYCOINBYTES] >> 2) & 0x03);
+			// s[i][4*j+2] = two.bits = ((buf[j + i * SABER_POLYCOINBYTES] >> 4) & 0x03);
+			// s[i][4*j+3] = two.bits = ((buf[j + i * SABER_POLYCOINBYTES] >> 6) & 0x03);
+			s[i][4*j] = (((buf[j + i * SABER_POLYCOINBYTES]) & 0x03) ^ 2) - 2; 
+			s[i][4*j+1] = (((buf[j + i * SABER_POLYCOINBYTES] >> 2) & 0x03)  ^ 2) - 2;
+			s[i][4*j+2] = (((buf[j + i * SABER_POLYCOINBYTES] >> 4) & 0x03)  ^ 2) - 2;
+			s[i][4*j+3] = (((buf[j + i * SABER_POLYCOINBYTES] >> 6) & 0x03)  ^ 2) - 2;
+		}
+	#endif
 	}
 }

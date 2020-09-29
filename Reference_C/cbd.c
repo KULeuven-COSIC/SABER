@@ -20,9 +20,9 @@ static uint64_t load_littleendian(const uint8_t *x, int bytes)
   return r;
 }
 
-void cbd(uint16_t s[SABER_N], const uint8_t buf[SABER_COINBYTES])
+void cbd(uint16_t s[SABER_N], const uint8_t buf[SABER_POLYCOINBYTES])
 {
-#if Saber_type == 3
+#if SABER_MU == 10
   uint32_t t, d, a[4], b[4];
   int i, j;
 
@@ -47,7 +47,7 @@ void cbd(uint16_t s[SABER_N], const uint8_t buf[SABER_COINBYTES])
     s[4 * i + 2] = (uint16_t)(a[2] - b[2]);
     s[4 * i + 3] = (uint16_t)(a[3] - b[3]);
   }
-#elif Saber_type == 2
+#elif SABER_MU == 8 
   uint32_t t, d, a[4], b[4];
   int i, j;
 
@@ -72,7 +72,7 @@ void cbd(uint16_t s[SABER_N], const uint8_t buf[SABER_COINBYTES])
     s[4 * i + 2] = (uint16_t)(a[2] - b[2]);
     s[4 * i + 3] = (uint16_t)(a[3] - b[3]);
   }
-#elif Saber_type == 1
+#elif SABER_MU 6
   uint64_t t, d, a[4], b[4];
   int i, j;
 
