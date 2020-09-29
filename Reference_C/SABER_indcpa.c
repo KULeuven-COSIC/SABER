@@ -12,7 +12,7 @@
 	This routine generates a=[Matrix K x K] of 256-coefficient polynomials 
 -------------------------------------------------------------------------------------*/
 
-#define h1 4 //2^(EQ-EP-1)
+#define h1 (1 << (SABER_EQ - SABER_EP - 1))
 #define h2 ((1 << (SABER_EP - 2)) - (1 << (SABER_EP - SABER_ET - 1)) + (1 << (SABER_EQ - SABER_EP - 1)))
 
 void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES])
