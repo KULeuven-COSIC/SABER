@@ -3,27 +3,16 @@
 
 #include "SABER_params.h"
 
-#ifdef uSaber
-	#define SABER_PREFIX "u"
-#else
-	#define SABER_PREFIX ""
-#endif
-
 #if SABER_K == 2
-	#define SABER_VARIANT "LightSaber"
+	#define CRYPTO_ALGNAME "LightSaber"
 #elif SABER_K == 3
-	#define SABER_VARIANT "Saber"
+	#define CRYPTO_ALGNAME "Saber"
 #elif SABER_K == 4
-	#define SABER_VARIANT "FireSaber"
-#endif
-
-#ifdef Saber90s
-	#define SABER_POSTFIX "-90s"
+	#define CRYPTO_ALGNAME "FireSaber"
 #else
-	#define SABER_POSTFIX ""
+	#error "Unsupported SABER parameter."
 #endif
 
-#define CRYPTO_ALGNAME SABER_PREFIX SABER_VARIANT SABER_POSTFIX
 #define CRYPTO_SECRETKEYBYTES SABER_SECRETKEYBYTES
 #define CRYPTO_PUBLICKEYBYTES SABER_PUBLICKEYBYTES
 #define CRYPTO_BYTES SABER_KEYBYTES
