@@ -13,8 +13,6 @@ all: test/PQCgenKAT_kem \
 SOURCES = pack_unpack.c poly.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
 					cbd.c crypto_stream_aes256ctr.c \
 					keccak4x/KeccakP-1600-times4-SIMD256.o rng.o
-#rng.o
-#randombytes.c
 
 SOURCES2 = pack_unpack.c rng.o poly.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
 					cbd.c crypto_stream_aes256ctr.c \
@@ -46,8 +44,8 @@ keccak4x/KeccakP-1600-times4-SIMD256.o: keccak4x/KeccakP-1600-times4-SIMD256.c \
 rng.o: rng.c
 	$(CC) $(CFLAGS2) -c rng.c -lcrypto -o $@ 
 
-fips202.o: fips202.c
-	$(CLANG) -c $^ -o $@
+# fips202.o: fips202.c
+# 	$(CLANG) -c $^ -o $@
 
 .PHONY: clean test
 
