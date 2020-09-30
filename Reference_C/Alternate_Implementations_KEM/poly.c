@@ -44,8 +44,6 @@ void GenMatrix(uint16_t A[SABER_K][SABER_K][SABER_N], const uint8_t seed[SABER_S
 	}
 }
 
-#include <string.h>
-
 void GenSecret(uint16_t s[SABER_K][SABER_N], const uint8_t seed[SABER_NOISE_SEEDBYTES])
 {
 	uint8_t buf[SABER_K * SABER_POLYCOINBYTES];

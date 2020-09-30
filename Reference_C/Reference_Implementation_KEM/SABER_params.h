@@ -6,12 +6,6 @@
 #define SABER_K 3 /* Saber */
 // #define SABER_K 4 /* FireSaber */
 
-/* Uncomment this to enable uSaber */
-#define uSaber
-
-/* Uncomment this to enable Saber-90s */
-// #define Saber90s
-
 /* Don't change anything below this line */
 #if SABER_K == 2
 	#define SABER_MU 10
@@ -24,14 +18,7 @@
 	#define SABER_ET 6
 #endif
 
-#ifdef uSaber
-	#define SABER_EQ 12
-	#define SABER_POLYCOINBYTES (2 * SABER_N / 8)
-#else
-	#define SABER_EQ 13
-	#define SABER_POLYCOINBYTES (SABER_MU * SABER_N / 8)
-#endif
-
+#define SABER_EQ 13
 #define SABER_EP 10
 #define SABER_N 256
 
@@ -39,6 +26,8 @@
 #define SABER_NOISE_SEEDBYTES 32
 #define SABER_KEYBYTES 32
 #define SABER_HASHBYTES 32
+
+#define SABER_POLYCOINBYTES (SABER_MU * SABER_N / 8)
 
 #define SABER_POLYBYTES (SABER_EQ * SABER_N / 8)
 #define SABER_POLYVECBYTES (SABER_K * SABER_POLYBYTES)

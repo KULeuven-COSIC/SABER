@@ -73,7 +73,6 @@ void BS2POLT(const uint8_t bytes[SABER_SCALEBYTES_KEM], uint16_t data[SABER_N])
 
 static void POLq2BS(uint8_t bytes[SABER_POLYBYTES], const uint16_t data[SABER_N])
 {
-#if SABER_EQ == 13
 	for (size_t j = 0; j < SABER_N / 8; j++)
 	{
 		size_t offset_byte = 13 * j;
@@ -92,23 +91,10 @@ static void POLq2BS(uint8_t bytes[SABER_POLYBYTES], const uint16_t data[SABER_N]
 		bytes[offset_byte + 11] = ((data[offset_data + 6] >> 10) & 0x07) | ((data[offset_data + 7] & 0x1f) << 3);
 		bytes[offset_byte + 12] = ((data[offset_data + 7] >> 5) & 0xff);
 	}
-#elif SABER_EQ == 12
-	for (size_t j = 0; j < SABER_N / 2; j++)
-	{
-		size_t offset_byte = 3 * j;
-		size_t offset_data = 2 * j;
-		bytes[offset_byte + 0] = (data[offset_data + 0] & (0xff));
-		bytes[offset_byte + 1] = ((data[offset_data + 0] >> 8) & 0xf) | ((data[offset_data + 1] & 0xf) << 4);
-		bytes[offset_byte + 2] = ((data[offset_data + 1] >> 4) & 0xff);
-	}
-#else
-#error "Unsupported SABER parameter."
-#endif
 }
 
 static void BS2POLq(const uint8_t bytes[SABER_POLYBYTES], uint16_t data[SABER_N])
 {
-#if SABER_EQ == 13
 	for (size_t j = 0; j < SABER_N / 8; j++)
 	{
 		size_t offset_byte = 13 * j;
@@ -122,17 +108,6 @@ static void BS2POLq(const uint8_t bytes[SABER_POLYBYTES], uint16_t data[SABER_N]
 		data[offset_data + 6] = (bytes[offset_byte + 9] >> 6 & (0x03)) | ((bytes[offset_byte + 10] & 0xff) << 2) | ((bytes[offset_byte + 11] & 0x07) << 10);
 		data[offset_data + 7] = (bytes[offset_byte + 11] >> 3 & (0x1f)) | ((bytes[offset_byte + 12] & 0xff) << 5);
 	}
-#elif SABER_EQ == 12
-	for (size_t j = 0; j < SABER_N / 2; j++)
-	{
-		size_t offset_byte = 3 * j;
-		size_t offset_data = 2 * j;
-		data[offset_data + 0] = (bytes[offset_byte + 0] & (0xff)) | ((bytes[offset_byte + 1] & 0xf) << 8);
-		data[offset_data + 1] = (bytes[offset_byte + 1] >> 4 & (0xf)) | ((bytes[offset_byte + 2] & 0xff) << 4);
-	}
-#else
-#error "Unsupported SABER parameter."
-#endif
 }
 
 static void POLp2BS(uint8_t bytes[SABER_POLYCOMPRESSEDBYTES], const uint16_t data[SABER_N])
