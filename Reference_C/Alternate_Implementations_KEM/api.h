@@ -9,11 +9,11 @@
 	#define SABER_PREFIX ""
 #endif
 
-#if SABER_K == 2
+#if SABER_L == 2
 	#define SABER_VARIANT "LightSaber"
-#elif SABER_K == 3
+#elif SABER_L == 3
 	#define SABER_VARIANT "Saber"
-#elif SABER_K == 4
+#elif SABER_L == 4
 	#define SABER_VARIANT "FireSaber"
 #endif
 

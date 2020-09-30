@@ -162,33 +162,33 @@ static void BS2POLp(const uint8_t bytes[SABER_POLYCOMPRESSEDBYTES], uint16_t dat
 	}
 }
 
-void POLVECq2BS(uint8_t bytes[SABER_POLYVECBYTES], const uint16_t data[SABER_K][SABER_N])
+void POLVECq2BS(uint8_t bytes[SABER_POLYVECBYTES], const uint16_t data[SABER_L][SABER_N])
 {
-	for (size_t i = 0; i < SABER_K; i++)
+	for (size_t i = 0; i < SABER_L; i++)
 	{
 		POLq2BS(bytes + i * SABER_POLYBYTES, data[i]);
 	}
 }
 
-void BS2POLVECq(const uint8_t bytes[SABER_POLYVECBYTES], uint16_t data[SABER_K][SABER_N])
+void BS2POLVECq(const uint8_t bytes[SABER_POLYVECBYTES], uint16_t data[SABER_L][SABER_N])
 {
-	for (size_t i = 0; i < SABER_K; i++)
+	for (size_t i = 0; i < SABER_L; i++)
 	{
 		BS2POLq(bytes + i * SABER_POLYBYTES, data[i]);
 	}
 }
 
-void POLVECp2BS(uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], const uint16_t data[SABER_K][SABER_N])
+void POLVECp2BS(uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], const uint16_t data[SABER_L][SABER_N])
 {
-	for (size_t i = 0; i < SABER_K; i++)
+	for (size_t i = 0; i < SABER_L; i++)
 	{
 		POLp2BS(bytes + i * (SABER_EP * SABER_N / 8), data[i]);
 	}
 }
 
-void BS2POLVECp(const uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], uint16_t data[SABER_K][SABER_N])
+void BS2POLVECp(const uint8_t bytes[SABER_POLYVECCOMPRESSEDBYTES], uint16_t data[SABER_L][SABER_N])
 {
-	for (size_t i = 0; i < SABER_K; i++)
+	for (size_t i = 0; i < SABER_L; i++)
 	{
 		BS2POLp(bytes + i * (SABER_EP * SABER_N / 8), data[i]);
 	}

@@ -2,9 +2,9 @@
 #define PARAMS_H
 
 /* Change this for different security strengths */
-// #define SABER_K 2 /* LightSaber */
-#define SABER_K 3 /* Saber */
-// #define SABER_K 4 /* FireSaber */
+// #define SABER_L 2 /* LightSaber */
+// #define SABER_L 3 /* Saber */
+#define SABER_L 4 /* FireSaber */
 
 /* Uncomment this to enable uSaber */
 #define uSaber
@@ -13,13 +13,13 @@
 // #define Saber90s
 
 /* Don't change anything below this line */
-#if SABER_K == 2
+#if SABER_L == 2
 	#define SABER_MU 10
 	#define SABER_ET 3
-#elif SABER_K == 3
+#elif SABER_L == 3
 	#define SABER_MU 8
 	#define SABER_ET 4
-#elif SABER_K == 4
+#elif SABER_L == 4
 	#define SABER_MU 6
 	#define SABER_ET 6
 #endif
@@ -41,10 +41,10 @@
 #define SABER_HASHBYTES 32
 
 #define SABER_POLYBYTES (SABER_EQ * SABER_N / 8)
-#define SABER_POLYVECBYTES (SABER_K * SABER_POLYBYTES)
+#define SABER_POLYVECBYTES (SABER_L * SABER_POLYBYTES)
 
 #define SABER_POLYCOMPRESSEDBYTES (SABER_EP * SABER_N / 8)
-#define SABER_POLYVECCOMPRESSEDBYTES (SABER_K * SABER_POLYCOMPRESSEDBYTES)
+#define SABER_POLYVECCOMPRESSEDBYTES (SABER_L * SABER_POLYCOMPRESSEDBYTES)
 
 #define SABER_SCALEBYTES_KEM (SABER_ET * SABER_N / 8)
 

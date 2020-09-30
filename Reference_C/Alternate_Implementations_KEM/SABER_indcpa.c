@@ -17,9 +17,9 @@
 
 void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES])
 {
-	uint16_t A[SABER_K][SABER_K][SABER_N];
-	uint16_t s[SABER_K][SABER_N];
-	uint16_t b[SABER_K][SABER_N] = {0};
+	uint16_t A[SABER_L][SABER_L][SABER_N];
+	uint16_t s[SABER_L][SABER_N];
+	uint16_t b[SABER_L][SABER_N] = {0};
 
 	uint8_t seed_A[SABER_SEEDBYTES];
 	uint8_t seed_s[SABER_NOISE_SEEDBYTES];
@@ -32,7 +32,7 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 	GenSecret(s, seed_s);
 	MatrixVectorMul(A, s, b, 1);
 
-	for (size_t i = 0; i < SABER_K; i++)
+	for (size_t i = 0; i < SABER_L; i++)
 	{
 		for (size_t j = 0; j < SABER_N; j++)
 		{
@@ -47,12 +47,12 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 
 void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER_NOISE_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t ciphertext[SABER_BYTES_CCA_DEC])
 {
-	uint16_t A[SABER_K][SABER_K][SABER_N];
-	uint16_t sp[SABER_K][SABER_N];
-	uint16_t bp[SABER_K][SABER_N] = {0};
+	uint16_t A[SABER_L][SABER_L][SABER_N];
+	uint16_t sp[SABER_L][SABER_N];
+	uint16_t bp[SABER_L][SABER_N] = {0};
 	uint16_t vp[SABER_N] = {0};
 	uint16_t mp[SABER_N];
-	uint16_t b[SABER_K][SABER_N];
+	uint16_t b[SABER_L][SABER_N];
 
 	const uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
 
@@ -60,7 +60,7 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 	GenSecret(sp, seed_sp);
 	MatrixVectorMul(A, sp, bp, 0);
 
-	for (size_t i = 0; i < SABER_K; i++)
+	for (size_t i = 0; i < SABER_L; i++)
 	{
 		for (size_t j = 0; j < SABER_N; j++)
 		{
@@ -85,8 +85,8 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], uint8_t m[SABER_KEYBYTES])
 {
 
-	uint16_t s[SABER_K][SABER_N];
-	uint16_t b[SABER_K][SABER_N];
+	uint16_t s[SABER_L][SABER_N];
+	uint16_t b[SABER_L][SABER_N];
 	uint16_t v[SABER_N] = {0};
 	uint16_t cm[SABER_N];
 

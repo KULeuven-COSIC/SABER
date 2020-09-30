@@ -3,11 +3,11 @@
 
 #include "SABER_params.h"
 
-#if SABER_K == 2
+#if SABER_L == 2
 	#define CRYPTO_ALGNAME "LightSaber"
-#elif SABER_K == 3
+#elif SABER_L == 3
 	#define CRYPTO_ALGNAME "Saber"
-#elif SABER_K == 4
+#elif SABER_L == 4
 	#define CRYPTO_ALGNAME "FireSaber"
 #else
 	#error "Unsupported SABER parameter."
