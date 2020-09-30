@@ -7,6 +7,7 @@
 #include "rng.h"
 #include "fips202.h"
 #include "SABER_params.h"
+#include "symmetric.h"
 
 /*-----------------------------------------------------------------------------------
 	This routine generates a=[Matrix K x K] of 256-coefficient polynomials 
@@ -25,7 +26,7 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 	uint8_t seed_s[SABER_NOISE_SEEDBYTES];
 
 	randombytes(seed_A, SABER_SEEDBYTES);
-	shake128(seed_A, SABER_SEEDBYTES, seed_A, SABER_SEEDBYTES); // for not revealing system RNG state
+	prf(seed_A, SABER_SEEDBYTES, seed_A, SABER_SEEDBYTES); // for not revealing system RNG state
 	randombytes(seed_s, SABER_NOISE_SEEDBYTES);
 
 	GenMatrix(A, seed_A);

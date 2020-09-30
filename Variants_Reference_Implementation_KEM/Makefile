@@ -10,8 +10,10 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/kem \
 
-SOURCES = pack_unpack.c poly.c fips202.c verify.c cbd.c SABER_indcpa.c kem.c
-HEADERS = SABER_params.h pack_unpack.h poly.h rng.h fips202.h verify.h cbd.h SABER_indcpa.h 
+SOURCES = pack_unpack.c poly.c verify.c cbd.c SABER_indcpa.c kem.c \
+			fips202.c sha256.c sha512.c aes256ctr.c symmetric-aes.c
+HEADERS = SABER_params.h pack_unpack.h poly.h rng.h verify.h cbd.h SABER_indcpa.h \
+			fips202.h aes256ctr.h sha2.h symmetric.h
 
 test/test_kex: $(SOURCES) $(HEADERS) rng.o test/test_kex.c
 	$(CC) $(CFLAGS) -o $@ $(SOURCES) rng.o test/test_kex.c -lcrypto
@@ -36,9 +38,9 @@ test:
 	./test/kem
 
 clean:
-	-$(RM) *.o
-	-$(RM) -r test/test_kex
-	-$(RM) -r test/kem
-	-$(RM) -r test/PQCgenKAT_kem
-	-$(RM) *.req
-	-$(RM) *.rsp
+	-$(RM) -f *.o
+	-$(RM) -rf test/test_kex
+	-$(RM) -rf test/kem
+	-$(RM) -rf test/PQCgenKAT_kem
+	-$(RM) -f *.req
+	-$(RM) -f *.rsp 

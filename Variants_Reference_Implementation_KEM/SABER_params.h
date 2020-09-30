@@ -10,7 +10,7 @@
 #define uSaber
 
 /* Uncomment this to enable Saber-90s */
-// #define Saber90s
+#define Saber90s
 
 /* Don't change anything below this line */
 #if SABER_L == 2
