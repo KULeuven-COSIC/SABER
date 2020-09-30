@@ -3,3 +3,5 @@
 *.elf
 *.a
 *.d
+.vscode
+libopencm3
