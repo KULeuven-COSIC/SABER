@@ -12,6 +12,7 @@
 #include "./polymul/toom-cook_4way.c"
 #include "fips202.h"
 #include "fips202x4.h"
+#include "symmetric.h"
 
 #define h1 4 //2^(EQ-EP-1)
 
@@ -106,7 +107,7 @@ void GenMatrix(polyvec *a, const unsigned char *seed)
   int i,j,k;
   uint16_t mod = (SABER_Q-1);
 
-  shake128(buf,byte_bank_length,seed,SABER_SEEDBYTES);
+  prf(buf,byte_bank_length,seed,SABER_SEEDBYTES);
   
   for(i=0;i<SABER_K;i++)
   {
@@ -129,7 +130,7 @@ void GenSecret(uint16_t r[SABER_K][SABER_N],const unsigned char *seed){
 
 		uint8_t buf[buf_size];
 
-		shake128(buf, buf_size, seed,SABER_NOISESEEDBYTES);
+		prf(buf, buf_size, seed,SABER_NOISESEEDBYTES);
 
 		for(i=0;i<SABER_K;i++)
 		{
@@ -183,7 +184,7 @@ void indcpa_kem_keypair(unsigned char *pk, unsigned char *sk)
 
   randombytes(seed, SABER_SEEDBYTES);
  
-  shake128(seed, SABER_SEEDBYTES, seed, SABER_SEEDBYTES); // for not revealing system RNG state
+  prf(seed, SABER_SEEDBYTES, seed, SABER_SEEDBYTES); // for not revealing system RNG state
   randombytes(noiseseed, SABER_COINBYTES);
 
 

@@ -9,12 +9,12 @@
 #include "../cpucycles.c"
 #include "../verify.h"
 
-#include<stdio.h>
-#include<stdint.h>
-#include<stdlib.h>
-#include<time.h>
-#include<immintrin.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
+#include <immintrin.h>
+#include <string.h>
 
 
 
@@ -65,7 +65,7 @@ int test_kem_cca()
 
   	for(i=0; i<repeat; i++)
   	{
-	    printf("i : %lu\n",i);
+	    //printf("i : %lu\n",i);
 
 	    //Generation of secret key sk and public key pk pair
 	    CLOCK1=cpucycles();	
