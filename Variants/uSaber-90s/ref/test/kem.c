@@ -4,10 +4,10 @@
 #include "../SABER_indcpa.h"
 #include "../verify.h"
 #include "cpucycles.c"
-#include<stdio.h>
-#include<stdint.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 

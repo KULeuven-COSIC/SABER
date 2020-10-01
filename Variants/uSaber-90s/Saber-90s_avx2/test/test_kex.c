@@ -35,7 +35,7 @@ int test_kem_cca()
   unsigned char entropy_input[48];
 	
   uint64_t i, j, repeat;
-  repeat=400000;
+  repeat=1000000;
   //repeat = 1;
 
   uint64_t CLOCK1,CLOCK2;

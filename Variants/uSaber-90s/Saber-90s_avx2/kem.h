@@ -1,6 +1,6 @@
 #ifndef INDCPA_H
 #define INDCPA_H
-#include<stdint.h>
+#include <stdint.h>
 
 void indcpa_keypair(uint8_t *pk, uint8_t *sk);
 

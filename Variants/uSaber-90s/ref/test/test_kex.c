@@ -1,8 +1,8 @@
-#include<stdio.h>
-#include<stdint.h>
-#include<stdlib.h>
-#include<time.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
 
 #include "../api.h"
 #include "../poly.h"
@@ -41,7 +41,7 @@ static int test_kem_cca()
   unsigned char entropy_input[48];
 	
   uint64_t i, j, repeat;
-  repeat=400000;	
+  repeat=1000000;	
   uint64_t CLOCK1,CLOCK2;
   uint64_t CLOCK_kp,CLOCK_enc,CLOCK_dec;
 

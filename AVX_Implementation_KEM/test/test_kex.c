@@ -9,12 +9,12 @@
 #include "../cpucycles.c"
 #include "../verify.h"
 
-#include<stdio.h>
-#include<stdint.h>
-#include<stdlib.h>
-#include<time.h>
-#include<immintrin.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <time.h>
+#include <immintrin.h>
+#include <string.h>
 
 
 

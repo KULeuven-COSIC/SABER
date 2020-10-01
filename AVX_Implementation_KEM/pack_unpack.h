@@ -2,7 +2,7 @@
 #define PACK_UNPACK_H
 
 #include <stdio.h>
-#include<stdint.h>
+#include <stdint.h>
 #include "SABER_params.h"
 
 void SABER_pack11bit(uint8_t *pk,  uint16_t skpv[SABER_K][SABER_N]);
