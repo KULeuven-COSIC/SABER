@@ -18,6 +18,8 @@
 
 void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABER_INDCPA_SECRETKEYBYTES])
 {
+	size_t i, j;
+
 	uint16_t A[SABER_L][SABER_L][SABER_N];
 	uint16_t s[SABER_L][SABER_N];
 	uint16_t b[SABER_L][SABER_N] = {0};
@@ -33,9 +35,9 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 	GenSecret(s, seed_s);
 	MatrixVectorMul(A, s, b, 1);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
-		for (size_t j = 0; j < SABER_N; j++)
+		for (j = 0; j < SABER_N; j++)
 		{
 			b[i][j] = (b[i][j] + h1) >> (SABER_EQ - SABER_EP);
 		}
@@ -48,6 +50,8 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 
 void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER_NOISE_SEEDBYTES], const uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t ciphertext[SABER_BYTES_CCA_DEC])
 {
+	size_t i, j;
+
 	uint16_t A[SABER_L][SABER_L][SABER_N];
 	uint16_t sp[SABER_L][SABER_N];
 	uint16_t bp[SABER_L][SABER_N] = {0};
@@ -61,9 +65,9 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 	GenSecret(sp, seed_sp);
 	MatrixVectorMul(A, sp, bp, 0);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
-		for (size_t j = 0; j < SABER_N; j++)
+		for (j = 0; j < SABER_N; j++)
 		{
 			bp[i][j] = (bp[i][j] + h1) >> (SABER_EQ - SABER_EP);
 		}
@@ -75,7 +79,7 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 
 	BS2POLmsg(m, mp);
 
-	for (size_t j = 0; j < SABER_N; j++)
+	for (j = 0; j < SABER_N; j++)
 	{
 		vp[j] = (vp[j] - (mp[j] << (SABER_EP - 1)) + h1) >> (SABER_EP - SABER_ET);
 	}
@@ -85,6 +89,7 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 
 void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t ciphertext[SABER_BYTES_CCA_DEC], uint8_t m[SABER_KEYBYTES])
 {
+	size_t i;
 
 	uint16_t s[SABER_L][SABER_N];
 	uint16_t b[SABER_L][SABER_N];
@@ -96,7 +101,7 @@ void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t
 	InnerProd(b, s, v);
 	BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, cm);
 
-	for (size_t i = 0; i < SABER_N; i++)
+	for (i = 0; i < SABER_N; i++)
 	{
 		v[i] = (v[i] + h2 - (cm[i] << (SABER_EP - SABER_ET))) >> (SABER_EP - 1);
 	}

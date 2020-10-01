@@ -231,12 +231,14 @@ static void toom_cook_4way (const uint16_t *a1, const uint16_t *b1, uint16_t *re
 /* res += a*b */
 void poly_mul_acc(const uint16_t a[SABER_N], const uint16_t b[SABER_N], uint16_t res[SABER_N])
 {
+    size_t i;
+
 	uint16_t c[2 * SABER_N] = {0};
 
 	toom_cook_4way(a, b, c);
 
 	/* reduction */
-	for (size_t i = SABER_N; i < 2 * SABER_N; i++)
+	for (i = SABER_N; i < 2 * SABER_N; i++)
 	{
 		res[i - SABER_N] += (c[i - SABER_N] - c[i]);
 	}

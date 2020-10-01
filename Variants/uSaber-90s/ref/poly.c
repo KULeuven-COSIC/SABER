@@ -9,9 +9,11 @@
 
 void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t s[SABER_L][SABER_N], uint16_t res[SABER_L][SABER_N], int16_t transpose)
 {
-	for (size_t i = 0; i < SABER_L; i++)
+	size_t i, j;
+
+	for (i = 0; i < SABER_L; i++)
 	{
-		for (size_t j = 0; j < SABER_L; j++)
+		for (j = 0; j < SABER_L; j++)
 		{
 			if (transpose == 1)
 			{
@@ -27,7 +29,8 @@ void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t
 
 void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SABER_N], uint16_t res[SABER_N])
 {
-	for (size_t j = 0; j < SABER_L; j++)
+	size_t j;
+	for (j = 0; j < SABER_L; j++)
 	{
 		poly_mul_acc(b[j], s[j], res);
 	}
@@ -35,11 +38,12 @@ void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SAB
 
 void GenMatrix(uint16_t A[SABER_L][SABER_L][SABER_N], const uint8_t seed[SABER_SEEDBYTES])
 {
+	size_t i;
 	uint8_t buf[SABER_L * SABER_POLYVECBYTES];
 
 	prf(buf, sizeof(buf), seed, SABER_SEEDBYTES);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
 		BS2POLVECq(buf + i * SABER_POLYVECBYTES, A[i]);
 	}
@@ -47,11 +51,12 @@ void GenMatrix(uint16_t A[SABER_L][SABER_L][SABER_N], const uint8_t seed[SABER_S
 
 void GenSecret(uint16_t s[SABER_L][SABER_N], const uint8_t seed[SABER_NOISE_SEEDBYTES])
 {
+	size_t i;
 	uint8_t buf[SABER_L * SABER_POLYCOINBYTES];
 
 	prf(buf, sizeof(buf), seed, SABER_NOISE_SEEDBYTES);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
 
 	#ifndef uSaber
@@ -59,8 +64,9 @@ void GenSecret(uint16_t s[SABER_L][SABER_N], const uint8_t seed[SABER_NOISE_SEED
 	#else
 
 		// struct int2_t {signed int bits:2;} two; 
+		size_t j;
 
-		for(size_t j=0;j<SABER_N/4;j++)
+		for(j=0;j<SABER_N/4;j++)
 		{
 			// s[i][4*j] = two.bits = ((buf[j + i * SABER_POLYCOINBYTES]) & 0x03); 
 			// s[i][4*j+1] = two.bits = ((buf[j + i * SABER_POLYCOINBYTES] >> 2) & 0x03);
