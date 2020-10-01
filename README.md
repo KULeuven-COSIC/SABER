@@ -10,7 +10,7 @@ SABER is a Mod-LWR based KEM finalist in the NIST Post-Quantum Cryptography Stan
   * `PQCkemKAT*.req` : input for Known Answer Test
   * `PQCkemKAT*.rsp` : output for Known Answer Test
 * `Reference_Implementation_KEM` : Reference implementations of LightSaber, Saber, and FireSaber.
-* `Variants_Reference_Implementation_KEM` : Reference implementations of Saber variants. Includes macros to enable all possible conbinations of {uniform}-{Fire,Light}Saber-{90s}.
+* `Variants` : Implementations of Saber variants: uSaber, Saber-90s, and SaberX4
 
 ## Compilation instructions
 
