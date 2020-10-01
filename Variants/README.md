@@ -5,7 +5,7 @@ SABER is a Mod-LWR based KEM submitted to NIST Post-Quantum Cryptography Process
 
 * `SaberX4_avx2` : AVX2 optimized implementation of SaberX4 
 * `uSaber-90s/ref` : Reference implementation of any combination of {uniform}-{Fire, Light}Saber-{90s}. 
-* `uSaber-90s/Saber-90s_avx2` : AVX2 optimized implementation of any combination of {Fire, Light}Saber-{90s}. AVX2 optimized implementations of uSaber are not available yet.
+* `uSaber-90s/avx2` : AVX2 optimized implementation of any combination of {Fire, Light}Saber-{90s}. AVX2 optimized implementations of uSaber are not available yet.
 
 ## Compilation instructions
 
