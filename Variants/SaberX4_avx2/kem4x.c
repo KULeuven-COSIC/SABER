@@ -1,4 +1,4 @@
-#include "randombytes.h"
+#include "rng.h"
 #include "fips202x4.h"
 #include "verify.h"
 #include "SABER_indcpa.h"
@@ -60,7 +60,6 @@ int crypto_kem_enc4x(
 {
   unsigned char kr0[64], kr1[64], kr2[64], kr3[64];          	  // Will contain key, coins
   unsigned char buf0[64], buf1[64], buf2[64], buf3[64];                          
-  int i;
 	
 	randombytes(buf0, 32); 
 	randombytes(buf1, 32); 

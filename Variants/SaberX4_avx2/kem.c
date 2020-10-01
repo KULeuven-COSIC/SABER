@@ -4,10 +4,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "SABER_indcpa.h"
-#include "crypto_kem.h"
+#include "kem.h"
 #include "kem.h"
 #include "verify.h"
-#include "randombytes.h"
+#include "rng.h"
 #include "fips202.h"
 #include "fips202x4.h"
 #include "kem4x.c"

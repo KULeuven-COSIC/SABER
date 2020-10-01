@@ -6,7 +6,7 @@
 #include "cbd.h"
 #include "SABER_params.h"
 #include "./polymul/toom-cook_4way.c"
-#include "randombytes.h"
+#include "rng.h"
 #include "fips202.h"
 #include "fips202x4.h"
 #include <unistd.h>
