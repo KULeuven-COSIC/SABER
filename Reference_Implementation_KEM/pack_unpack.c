@@ -17,8 +17,9 @@ void POLT2BS(uint8_t bytes[SABER_SCALEBYTES_KEM], const uint16_t data[SABER_N])
 #elif SABER_ET == 4
 	for (j = 0; j < SABER_N / 2; j++)
 	{
+		offset_byte = j;
 		offset_data = 2 * j;
-		bytes[j] = (data[offset_data] & 0x0f) | ((data[offset_data + 1] & 0x0f) << 4);
+		bytes[offset_byte] = (data[offset_data] & 0x0f) | ((data[offset_data + 1] & 0x0f) << 4);
 	}
 #elif SABER_ET == 6
 	for (j = 0; j < SABER_N / 4; j++)
@@ -54,9 +55,10 @@ void BS2POLT(const uint8_t bytes[SABER_SCALEBYTES_KEM], uint16_t data[SABER_N])
 #elif SABER_ET == 4
 	for (j = 0; j < SABER_N / 2; j++)
 	{
+		offset_byte = j;
 		offset_data = 2 * j;
-		data[offset_data] = bytes[j] & 0x0f;
-		data[offset_data + 1] = (bytes[j] >> 4) & 0x0f;
+		data[offset_data] = bytes[offset_byte] & 0x0f;
+		data[offset_data + 1] = (bytes[offset_byte] >> 4) & 0x0f;
 	}
 #elif SABER_ET == 6
 	for (j = 0; j < SABER_N / 4; j++)

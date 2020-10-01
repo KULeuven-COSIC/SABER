@@ -37,7 +37,7 @@ void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SAB
 void GenMatrix(uint16_t A[SABER_L][SABER_L][SABER_N], const uint8_t seed[SABER_SEEDBYTES])
 {
 	uint8_t buf[SABER_L * SABER_POLYVECBYTES];
-	int i, j;
+	int i;
 
 	shake128(buf, sizeof(buf), seed, SABER_SEEDBYTES);
 
