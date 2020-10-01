@@ -19,6 +19,7 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 
 	uint8_t seed_A[SABER_SEEDBYTES];
 	uint8_t seed_s[SABER_NOISE_SEEDBYTES];
+	int i, j;
 
 	randombytes(seed_A, SABER_SEEDBYTES);
 	shake128(seed_A, SABER_SEEDBYTES, seed_A, SABER_SEEDBYTES); // for not revealing system RNG state
@@ -28,9 +29,9 @@ void indcpa_kem_keypair(uint8_t pk[SABER_INDCPA_PUBLICKEYBYTES], uint8_t sk[SABE
 	GenSecret(s, seed_s);
 	MatrixVectorMul(A, s, b, 1);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
-		for (size_t j = 0; j < SABER_N; j++)
+		for (j = 0; j < SABER_N; j++)
 		{
 			b[i][j] = (b[i][j] + h1) >> (SABER_EQ - SABER_EP);
 		}
@@ -49,16 +50,16 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 	uint16_t vp[SABER_N] = {0};
 	uint16_t mp[SABER_N];
 	uint16_t b[SABER_L][SABER_N];
-
+	int i, j;
 	const uint8_t *seed_A = pk + SABER_POLYVECCOMPRESSEDBYTES;
 
 	GenMatrix(A, seed_A);
 	GenSecret(sp, seed_sp);
 	MatrixVectorMul(A, sp, bp, 0);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
-		for (size_t j = 0; j < SABER_N; j++)
+		for (j = 0; j < SABER_N; j++)
 		{
 			bp[i][j] = (bp[i][j] + h1) >> (SABER_EQ - SABER_EP);
 		}
@@ -70,7 +71,7 @@ void indcpa_kem_enc(const uint8_t m[SABER_KEYBYTES], const uint8_t seed_sp[SABER
 
 	BS2POLmsg(m, mp);
 
-	for (size_t j = 0; j < SABER_N; j++)
+	for (j = 0; j < SABER_N; j++)
 	{
 		vp[j] = (vp[j] - (mp[j] << (SABER_EP - 1)) + h1) >> (SABER_EP - SABER_ET);
 	}
@@ -85,13 +86,14 @@ void indcpa_kem_dec(const uint8_t sk[SABER_INDCPA_SECRETKEYBYTES], const uint8_t
 	uint16_t b[SABER_L][SABER_N];
 	uint16_t v[SABER_N] = {0};
 	uint16_t cm[SABER_N];
+	int i;
 
 	BS2POLVECq(sk, s);
 	BS2POLVECp(ciphertext, b);
 	InnerProd(b, s, v);
 	BS2POLT(ciphertext + SABER_POLYVECCOMPRESSEDBYTES, cm);
 
-	for (size_t i = 0; i < SABER_N; i++)
+	for (i = 0; i < SABER_N; i++)
 	{
 		v[i] = (v[i] + h2 - (cm[i] << (SABER_EP - SABER_ET))) >> (SABER_EP - 1);
 	}

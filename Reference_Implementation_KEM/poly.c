@@ -8,9 +8,10 @@
 
 void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t s[SABER_L][SABER_N], uint16_t res[SABER_L][SABER_N], int16_t transpose)
 {
-	for (size_t i = 0; i < SABER_L; i++)
+	int i, j;
+	for (i = 0; i < SABER_L; i++)
 	{
-		for (size_t j = 0; j < SABER_L; j++)
+		for (j = 0; j < SABER_L; j++)
 		{
 			if (transpose == 1)
 			{
@@ -26,7 +27,8 @@ void MatrixVectorMul(const uint16_t A[SABER_L][SABER_L][SABER_N], const uint16_t
 
 void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SABER_N], uint16_t res[SABER_N])
 {
-	for (size_t j = 0; j < SABER_L; j++)
+	int j;
+	for (j = 0; j < SABER_L; j++)
 	{
 		poly_mul_acc(b[j], s[j], res);
 	}
@@ -35,10 +37,11 @@ void InnerProd(const uint16_t b[SABER_L][SABER_N], const uint16_t s[SABER_L][SAB
 void GenMatrix(uint16_t A[SABER_L][SABER_L][SABER_N], const uint8_t seed[SABER_SEEDBYTES])
 {
 	uint8_t buf[SABER_L * SABER_POLYVECBYTES];
+	int i, j;
 
 	shake128(buf, sizeof(buf), seed, SABER_SEEDBYTES);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
 		BS2POLVECq(buf + i * SABER_POLYVECBYTES, A[i]);
 	}
@@ -47,10 +50,11 @@ void GenMatrix(uint16_t A[SABER_L][SABER_L][SABER_N], const uint8_t seed[SABER_S
 void GenSecret(uint16_t s[SABER_L][SABER_N], const uint8_t seed[SABER_NOISE_SEEDBYTES])
 {
 	uint8_t buf[SABER_L * SABER_POLYCOINBYTES];
+	size_t i;
 
 	shake128(buf, sizeof(buf), seed, SABER_NOISE_SEEDBYTES);
 
-	for (size_t i = 0; i < SABER_L; i++)
+	for (i = 0; i < SABER_L; i++)
 	{
 		cbd(s[i], buf + i * SABER_POLYCOINBYTES);
 	}
