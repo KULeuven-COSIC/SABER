@@ -3,15 +3,16 @@
 
 #include "SABER_params.h"
 
+void saber_aes256ctr_prf(unsigned char *output, unsigned long long outlen, const unsigned char *input);
+
 #ifdef Saber90s
 
     #include <openssl/sha.h>
-	#include "crypto_stream.h"
 
     #define hash_h(OUT, IN, INBYTES) SHA256(IN, INBYTES, OUT)
     #define hash_g(OUT, IN, INBYTES) SHA512(IN, INBYTES, OUT)
 
-	#define prf(OUT, OUTLEN, IN, INLEN) crypto_stream_aes256ctr(OUT, OUTLEN, IN, IN)
+	#define prf(OUT, OUTLEN, IN, INLEN) saber_aes256ctr_prf(OUT, OUTLEN, IN)
 
 #else
 

@@ -4,7 +4,7 @@
 #define PARAMS_H
 
 /* Uncomment this to enable Saber-90s */
-//#define Saber90s
+#define Saber90s
 
 #if Saber_type == 1
 	#define SABER_K 2
