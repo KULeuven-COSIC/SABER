@@ -10,16 +10,15 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/test_sample_matrix
 
-SOURCES = pack_unpack.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
-					cbd.c symmetric-aes.c crypto_stream_aes256ctr.c \
+SOURCES = pack_unpack.c poly.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
+					cbd.c crypto_stream_aes256ctr.c \
 					keccak4x/KeccakP-1600-times4-SIMD256.o rng.o
 
-SOURCES2 = pack_unpack.c rng.o verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
-					cbd.c symmetric-aes.c crypto_stream_aes256ctr.c \
+SOURCES2 = pack_unpack.c rng.o poly.c verify.c fips202.o fips202x4.c SABER_indcpa.c kem.c \
+					cbd.c crypto_stream_aes256ctr.c \
 					keccak4x/KeccakP-1600-times4-SIMD256.o
 
-HEADERS = SABER_params.h pack_unpack.h poly.h verify.h cbd.h SABER_indcpa.h kem.h rng.h \
-			crypto_stream.h fips202.h fips202x4.h api.h randombytes.h symmetric.h
+HEADERS = SABER_params.h pack_unpack.h poly.h verify.h cbd.h SABER_indcpa.h kem.h rng.h fips202.h fips202x4.h api.h randombytes.h
 
 
 test/test_kex: $(SOURCES) $(HEADERS) test/test_kex.c 
@@ -56,10 +55,10 @@ test:
 
 
 clean:
-	-$(RM) -f *.o
-	-$(RM) -rf test/test_sample_matrix
-	-$(RM) -rf test/test_kex
-	-$(RM) -rf test/PQCgenKAT_kem
-	-$(RM) -rf keccak4x/KeccakP-1600-times4-SIMD256.o
+	-$(RM) *.o
+	-$(RM) -r test/test_sample_matrix
+	-$(RM) -r test/test_kex
+	-$(RM) -r test/PQCgenKAT_kem
+	-$(RM) -r keccak4x/KeccakP-1600-times4-SIMD256.o
 
 

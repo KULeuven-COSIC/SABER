@@ -27,5 +27,9 @@ typedef struct{
   poly vec[SABER_K];
 } polyvec;
 
+void poly_getnoise(uint16_t *r,const unsigned char *seed, unsigned char nonce);
+
+void poly_getnoise4x(uint16_t *r0, uint16_t *r1, uint16_t *r2, const unsigned char *seed, unsigned char nonce0, unsigned char nonce1, unsigned char nonce2, unsigned char nonce3);
+
 
 #endif

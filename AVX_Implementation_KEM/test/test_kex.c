@@ -9,12 +9,12 @@
 #include "../cpucycles.c"
 #include "../verify.h"
 
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <time.h>
-#include <immintrin.h>
-#include <string.h>
+#include<stdio.h>
+#include<stdint.h>
+#include<stdlib.h>
+#include<time.h>
+#include<immintrin.h>
+#include<string.h>
 
 
 
@@ -35,7 +35,7 @@ int test_kem_cca()
   unsigned char entropy_input[48];
 	
   uint64_t i, j, repeat;
-  repeat=400000;
+  repeat=100000;
   //repeat = 1;
 
   uint64_t CLOCK1,CLOCK2;
@@ -65,7 +65,7 @@ int test_kem_cca()
 
   	for(i=0; i<repeat; i++)
   	{
-	    //printf("i : %lu\n",i);
+	    printf("i : %lu\n",i);
 
 	    //Generation of secret key sk and public key pk pair
 	    CLOCK1=cpucycles();	
