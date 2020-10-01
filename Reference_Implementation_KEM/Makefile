@@ -36,9 +36,9 @@ test:
 	./test/kem
 
 clean:
-	-$(RM) *.o
-	-$(RM) -r test/test_kex
-	-$(RM) -r test/kem
-	-$(RM) -r test/PQCgenKAT_kem
-	-$(RM) *.req
-	-$(RM) *.rsp
+	-$(RM) -f *.o
+	-$(RM) -rf test/test_kex
+	-$(RM) -rf test/kem
+	-$(RM) -rf test/PQCgenKAT_kem
+	-$(RM) -f *.req
+	-$(RM) -f *.rsp

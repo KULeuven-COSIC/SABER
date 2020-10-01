@@ -11,7 +11,6 @@
 //#include "./polymul/toom_cook_4/toom-cook_4way.c"
 #include "./polymul/toom-cook_4way.c"
 #include "fips202.h"
-#include "fips202x4.h"
 #include "symmetric.h"
 
 #define h1 4 //2^(EQ-EP-1)

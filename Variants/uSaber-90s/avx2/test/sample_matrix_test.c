@@ -1,5 +1,5 @@
 #include "../poly.h"
-#include "../randombytes.h"
+#include "../rng.h"
 #include "../SABER_indcpa.h"
 #include "../kem.h"
 #include "../cpucycles.c"

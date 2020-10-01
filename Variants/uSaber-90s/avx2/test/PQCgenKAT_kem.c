@@ -77,7 +77,7 @@ main()
     done = 0;
     do {
         if ( FindMarker(fp_req, "count = ") )
-            fscanf(fp_req, "%d", &count);
+            ret_val = fscanf(fp_req, "%d", &count);
         else {
             done = 1;
             break;

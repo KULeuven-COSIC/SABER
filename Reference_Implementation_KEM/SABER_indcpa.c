@@ -8,10 +8,6 @@
 #include "fips202.h"
 #include "SABER_params.h"
 
-/*-----------------------------------------------------------------------------------
-	This routine generates a=[Matrix K x K] of 256-coefficient polynomials 
--------------------------------------------------------------------------------------*/
-
 #define h1 (1 << (SABER_EQ - SABER_EP - 1))
 #define h2 ((1 << (SABER_EP - 2)) - (1 << (SABER_EP - SABER_ET - 1)) + (1 << (SABER_EQ - SABER_EP - 1)))
 

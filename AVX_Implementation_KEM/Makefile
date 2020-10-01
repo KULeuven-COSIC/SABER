@@ -10,11 +10,10 @@ all: test/PQCgenKAT_kem \
      test/test_kex \
      test/test_sample_matrix
 
-SOURCES = pack_unpack.c verify.c fips202.o SABER_indcpa.c kem.c \
-					cbd.c crypto_stream_aes256ctr.c rng.o
+SOURCES = pack_unpack.c verify.c fips202.o SABER_indcpa.c kem.c cbd.c rng.o
+					
 
-SOURCES2 = pack_unpack.c rng.o verify.c fips202.o SABER_indcpa.c kem.c \
-					cbd.c crypto_stream_aes256ctr.c \
+SOURCES2 = pack_unpack.c rng.o verify.c fips202.o SABER_indcpa.c kem.c cbd.c 
 					
 
 HEADERS = SABER_params.h pack_unpack.h verify.h cbd.h SABER_indcpa.h kem.h rng.h fips202.h api.h
