@@ -641,7 +641,7 @@ unsigned char MatrixVectorMul_encryption_cmp(const unsigned char *seed, uint16_t
 
 unsigned char indcpa_kem_enc_cmp(unsigned char *message_received, unsigned char *noiseseed, const unsigned char *pk, unsigned char *ciphertext)
 {
-	unsigned char fail = 0;
+	uint32_t fail = 0;
 
 	uint32_t i,j;
 	uint16_t skpv1[SABER_K][SABER_N];
@@ -679,8 +679,8 @@ unsigned char indcpa_kem_enc_cmp(unsigned char *message_received, unsigned char 
 		fail |= SABER_pack_6bit_cmp(&ciphertext[SABER_POLYVECCOMPRESSEDBYTES], vprime);
 	#endif
 
-	fail = ~fail + 1;
-	fail >>= 63;
+    fail = (~fail + 1);
+    fail >>= 31;
 
 	return (unsigned char)fail;
 }
