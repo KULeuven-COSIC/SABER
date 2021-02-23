@@ -4,4 +4,8 @@
 *.a
 *.d
 .vscode
-libopencm3
+testvectors/
+benchmarks/
+__pycache__/
+bin/
+bin-host/
