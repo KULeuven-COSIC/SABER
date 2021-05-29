@@ -1,6 +1,6 @@
 # SABER
 
-SABER is a Mod-LWR based KEM finalist in the NIST Post-Quantum Cryptography Standardization Process.
+SABER is a Mod-LWR based KEM finalist in the NIST Post-Quantum Cryptography Standardization Process. For additional details see https://www.esat.kuleuven.be/cosic/pqcrypto/saber.
 
 ## Folder structure
 
