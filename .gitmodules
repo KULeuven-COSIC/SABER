@@ -1,0 +1,3 @@
+[submodule "Cortex-M_Implementation_KEM/Cortex-M4/pqm4"]
+	path = Cortex-M_Implementation_KEM/Cortex-M4/pqm4
+	url = git@github.com:mupq/pqm4.git
