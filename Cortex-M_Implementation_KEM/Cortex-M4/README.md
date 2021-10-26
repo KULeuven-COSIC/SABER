@@ -17,7 +17,9 @@ After cloning or downloading the repository, it is necessary to add the librarie
 
 ## Sources
 
-* `m4-tc4kara`: This code implements a polynomial multiplication based on Toom-Cook 4-way and Karatsuba achieving achieving high-speed while keeping the memory utilization rather low for Saber on embedded devices.
+* `m4-tc4kara`: This code implements a polynomial multiplication based on Toom-Cook 4-way and Karatsuba achieving high-speed while keeping the memory utilization rather low for Saber on embedded devices.
+
+* `m4-striding`: This code implements a polynomial multiplication based on the striding version of Toom-Cook 4-way and Karatsuba to achieve a significant memory reduction with respect to the classical version of such algorithms, while not suffering a penalization on performance / marginally improving performance numbers.
 
 * `tba`:
 
