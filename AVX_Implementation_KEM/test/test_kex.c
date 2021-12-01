@@ -86,9 +86,8 @@ int test_kem_cca()
 	    crypto_kem_dec(k_b, c, sk);
 	    CLOCK2=cpucycles();	
 	    CLOCK_dec=CLOCK_dec+(CLOCK2-CLOCK1);	
-  
 
-	    		
+		    
 	    // Functional verification: check if k_a == k_b?
 	    for(j=0; j<SABER_KEYBYTES; j++)
 	    {

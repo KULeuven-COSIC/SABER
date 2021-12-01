@@ -10,6 +10,12 @@
 #include "rng.h"
 #include "fips202.h"
 
+uint64_t clock_kp_temp=0;
+uint64_t clock_kp_kex=0;
+uint64_t clock_enc_kex=0;
+uint64_t clock_dec_kex=0;
+
+
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 {
   uint64_t CLOCK1, CLOCK2;

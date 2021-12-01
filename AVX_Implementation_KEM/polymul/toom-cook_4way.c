@@ -5,6 +5,7 @@ Cleaned version for step by step approach look into the _debug file
 #include "consts.h"
 #include "scm_avx.c"
 #include "matrix.c"
+#include "../SABER_indcpa.h"
 
 void TC_interpol(__m256i *c_bucket, __m256i* res_avx_output);
 void KARA_interpol(__m256i *c_bucket, __m256i* result_final0, __m256i* result_final1, __m256i* result_final2, __m256i* result_final3, __m256i* result_final4, __m256i* result_final5, __m256i* result_final6);

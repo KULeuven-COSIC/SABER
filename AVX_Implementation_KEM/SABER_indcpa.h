@@ -19,11 +19,11 @@ void indcpa_kem_dec(const unsigned char *sk, const unsigned char *ciphertext, un
 
 //uint64_t clock1,clock2;
 
-uint64_t clock_kp_kex, clock_enc_kex, clock_dec_kex;
+extern uint64_t clock_kp_kex, clock_enc_kex, clock_dec_kex;
 
-uint64_t clock_kp_temp;
+extern uint64_t clock_kp_temp;
 
-__m256i mask,inv3_avx,inv9_avx,inv15_avx,int45_avx,int30_avx,int0_avx;
+extern __m256i mask,inv3_avx,inv9_avx,inv15_avx,int45_avx,int30_avx,int0_avx;
 
 #endif
 

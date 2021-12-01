@@ -17,12 +17,20 @@
 #define h2 ( (1<<(SABER_EP-2)) - (1<<(SABER_EP-SABER_ET-1)) + (1<<(SABER_EQ-SABER_EP-1)) )
 
 
+uint64_t clock_mul=0;
+uint64_t clock_matrix=0;
+uint64_t clock_secret= 0;
+uint64_t count_mul= 0;
+uint64_t clock_mv_vv_mul=0;
+uint64_t count_enc=0;
 
 uint64_t mask_ar[4]={~(0UL)};
 __m256i mask_load;
 __m256i floor_round;
 __m256i H1_avx;	
 __m256i H2_avx;
+
+__m256i mask,inv3_avx,inv9_avx,inv15_avx,int45_avx,int30_avx,int0_avx;
 
 void POL2MSG(uint16_t *message_dec_unpacked, unsigned char *message_dec);
 
