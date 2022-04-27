@@ -1,3 +1,8 @@
+
+# Created by Daniel Norte de Moraes <danielcheagle@gmail.com>
+# for Saber PQC Project.
+# License: Public Domain <Unlicense>
+
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 project(saber-reference VERSION 3 DESCRIPTION "SABER is a Module-LWR based KEM submitted to NIST"
@@ -33,9 +38,6 @@ set(libheaders
 
 set(libheaders_install
   api.h ${libheaders} )
-#
-# set(libheaders_install
-#   api.h SABER_params.h rng.h fips202.h verify.h SABER_indcpa.h )
 
 add_library(saber_reference SHARED ${libfiles} ${libheaders})
 target_link_libraries(saber_reference crypto)
