@@ -37,7 +37,7 @@ set(libheaders
   SABER_indcpa.h )
 
 set(libheaders_install
-  api.h ${libheaders} )
+  api.h SABER_params.h )
 
 add_library(saber_reference SHARED ${libfiles} ${libheaders})
 target_link_libraries(saber_reference crypto)
